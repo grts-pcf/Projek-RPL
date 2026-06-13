@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="logo">
+
+    <img 
+        src="logo ubd.png" 
+        alt="Logo UBD"
+        class="logo-img"
+    >
+
+    <h2>UBD Transport</h2>
+
+</div>
+
+        <ul class="menu">
+
+            <li>
+                <a href="index.html">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="data-peminjam.html">Data Peminjam</a>
+            </li>
+
+            <li>
+                <a href="riwayat.html">Riwayat Peminjaman</a>
+            </li>
+
+            <li>
+                <a href="kendaraan.html">Master Kendaraan</a>
+            </li>
+
+            <li>
+                <a href="pengemudi.html">Pengemudi</a>
+            </li>
+
+            <li class="active">
+                <a href="laporan.html">Laporan</a>
+            </li>
+
+            <li>
+                <a href="pengaturan.html">Pengaturan</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Navbar -->
+        <div class="navbar">
+
+            <h1>Laporan Peminjaman</h1>
+
+            <div class="profile">
+                <a href="LOGIN.html">Admin</a>
+            </div>
+
+        </div>
+
+        <!-- Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Peminjaman</h3>
+                <p>120</p>
+            </div>
+
+            <div class="card">
+                <h3>Kendaraan Aktif</h3>
+                <p>18</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Pengemudi</h3>
+                <p>10</p>
+            </div>
+
+            <div class="card">
+                <h3>Laporan Bulan Ini</h3>
+                <p>35</p>
+            </div>
+
+        </div>
+
+        <!-- Filter -->
+        <div class="form-container">
+
+            <h2>Filter Laporan</h2>
+
+            <div class="row">
+
+                <div class="input-group">
+                    <label>Tanggal Awal</label>
+                    <input type="date">
+                </div>
+
+                <div class="input-group">
+                    <label>Tanggal Akhir</label>
+                    <input type="date">
+                </div>
+
+                <div class="input-group">
+                    <label>Status</label>
+                    <select>
+                        <option>Semua</option>
+                        <option>Disetujui</option>
+                        <option>Pending</option>
+                        <option>Ditolak</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn-1">
+                Generate Laporan
+            </button>
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+
+                <h2>Data Laporan</h2>
+
+                <button style="
+                    width:auto;
+                    padding:12px 20px;
+                " class="btn-1">
+                    Export Excel
+                </button>
+
+            </div>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Peminjam</th>
+                        <th>Kendaraan</th>
+                        <th>Pengemudi</th>
+                        <th>Tanggal</th>
+                        <th>Tujuan</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td>Jasmine</td>
+                        <td>Avanza</td>
+                        <td>Budi</td>
+                        <td>04 Juni 2026</td>
+                        <td>Seminar</td>
+                        <td>
+                            <span class="success">
+                                Disetujui
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>Kevin</td>
+                        <td>Hiace</td>
+                        <td>Andi</td>
+                        <td>05 Juni 2026</td>
+                        <td>Kunjungan Industri</td>
+                        <td>
+                            <span class="pending">
+                                Pending
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Michael</td>
+                        <td>Innova</td>
+                        <td>Rian</td>
+                        <td>06 Juni 2026</td>
+                        <td>Meeting Client</td>
+                        <td>
+
+                            <span style="
+                                background:#fee2e2;
+                                color:#991b1b;
+                                padding:8px 12px;
+                                border-radius:8px;
+                            ">
+                                Ditolak
+                            </span>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

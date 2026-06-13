@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login Admin</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins', sans-serif;
+        }
+
+        body{
+            background:#f4f7fe;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .login-container{
+            width:400px;
+            background:white;
+            padding:40px;
+            border-radius:20px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .logo-login{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        .logo-login h2{
+            color:#2563eb;
+            font-size:36px;
+        }
+
+        .login-container h1{
+            text-align:center;
+            margin-bottom:30px;
+            color:#111827;
+        }
+
+        .input-group{
+            display:flex;
+            flex-direction:column;
+            margin-bottom:20px;
+        }
+
+        .input-group label{
+            margin-bottom:8px;
+            color:#374151;
+        }
+
+        .input-group input{
+            padding:14px;
+            border:1px solid #d1d5db;
+            border-radius:12px;
+            outline:none;
+            font-size:14px;
+        }
+
+        /* Password */
+
+        .password-box{
+            position:relative;
+            display:flex;
+            align-items:center;
+        }
+
+        .password-box input{
+            width:100%;
+            padding-right:60px;
+        }
+
+        .show-btn{
+            position:absolute;
+            right:10px;
+            background:none;
+            border:none;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .show-btn img{
+            width:22px;
+            height:22px;
+        }
+
+        /* Login Button */
+
+        .login-btn{
+            width:100%;
+            padding:15px;
+            border:none;
+            background:#2563eb;
+            color:white;
+            border-radius:12px;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.3s;
+            margin-top:10px;
+        }
+
+        .login-btn:hover{
+            background:#1d4ed8;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo-login">
+            
+    <img 
+        src="logo ubd.png" 
+        alt="Logo UBD"
+        class="logo-img"
+    >
+            <h2>UBD Transport</h2>
+        </div>
+
+        <h1>Login Admin</h1>
+
+        <form action="index.html">
+
+            <!-- Username -->
+
+            <div class="input-group">
+
+                <label>Username</label>
+
+                <input 
+                    type="text" 
+                    placeholder="Masukkan username"
+                >
+
+            </div>
+
+            <!-- Password -->
+
+            <div class="input-group">
+
+                <label>Password</label>
+
+                <div class="password-box">
+
+                    <input 
+                        type="password"
+                        id="password"
+                        placeholder="Masukkan password"
+                    >
+
+                    <!-- Icon Button -->
+
+                    <button 
+                        type="button"
+                        class="show-btn"
+                        onclick="togglePassword()"
+                    >
+
+                        <img 
+                            id="eyeIcon"
+                            src="eye-24.png"
+                            alt="Show Password"
+                        >
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- Login Button -->
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- Script -->
+
+    <script>
+
+        function togglePassword(){
+
+            let password = document.getElementById("password");
+            let icon = document.getElementById("eyeIcon");
+
+            if(password.type === "password"){
+
+                password.type = "text";
+
+                icon.src = "hide-24.png";
+
+            }else{
+
+                password.type = "password";
+
+                icon.src = "eye-24.png";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

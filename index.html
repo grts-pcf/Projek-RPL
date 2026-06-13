@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Peminjaman Kendaraan</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="logo">
+
+    <img 
+        src="logo ubd.png" 
+        alt="Logo UBD"
+        class="logo-img"
+    >
+
+    <h2>UBD Transport</h2>
+
+</div>
+
+        <ul class="menu">
+            <li class="active">
+                    <a href="index.html">Dashboard</a>
+                </li>
+
+            
+                <li>
+                    <a href="data-peminjam.html">
+                        Data Peminjam
+                    </a>
+                </li>
+
+                <li>
+                    <a href="riwayat.html">
+                        Riwayat Peminjaman
+                    </a>
+                </li>
+
+                <li>
+                    <a href="kendaraan.html">
+                        Master Kendaraan
+                    </a>
+                </li>
+
+                <li>
+                    <a href="pengemudi.html">
+                        Pengemudi
+                    </a>
+                </li>
+
+                <li>
+                    <a href="laporan.html">
+                        Laporan
+                    </a>
+                </li>
+
+                <li>
+                    <a href="pengaturan.html">
+                        Pengaturan
+                    </a>
+                </li>
+
+            </ul>
+
+    </div>
+
+    <!-- Main -->
+    <div class="main-content">
+
+        <!-- Navbar -->
+        <div class="navbar">
+
+            <h1>Sistem Peminjaman Kendaraan</h1>
+
+            <div class="profile">
+                <a href="LOGIN.html">Admin</a>
+            </div>
+            
+        </div>
+
+        <!-- Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Kendaraan</h3>
+                <p>25</p>
+            </div>
+
+            <div class="card">
+                <h3>Total Pengemudi</h3>
+                <p>10</p>
+            </div>
+
+            <div class="card">
+                <h3>Peminjaman Hari Ini</h3>
+                <p>7</p>
+            </div>
+
+            <div class="card">
+                <h3>Kendaraan Tersedia</h3>
+                <p>18</p>
+            </div>
+
+        </div>
+
+        <!-- Form -->
+        <div class="form-container">
+
+            <h2>Form Peminjaman Kendaraan</h2>
+
+            <form>
+
+                <div class="input-group">
+                    <label>Nama Peminjam</label>
+                    <input type="text" placeholder="Masukkan nama">
+                </div>
+
+                <div class="input-group">
+                    <label>Unit / Bagian</label>
+                    <input type="text" placeholder="Masukkan unit">
+                </div>
+
+                <div class="input-group">
+                    <label>No Telepon</label>
+                    <input type="text" placeholder="Masukkan nomor telepon">
+                </div>
+
+                <div class="row">
+
+                    <div class="input-group">
+                        <label>Tanggal</label>
+                        <input type="date">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Jam Berangkat</label>
+                        <input type="time">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Jam Kembali</label>
+                        <input type="time">
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+                    <label>Keperluan</label>
+                    <textarea placeholder="Masukkan keperluan"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>Tujuan</label>
+                    <textarea placeholder="Masukkan tujuan"></textarea>
+                </div>
+
+                <div class="row">
+
+                    <!-- Jenis Kendaraan -->
+
+                    <div class="input-group">
+
+                        <label>Jenis Kendaraan</label>
+
+                        <select>
+                            <option>Pilih Jenis Kendaraan</option>
+                            <option>Motor</option>
+                            <option>Mobil</option>
+                            <option>Sepeda</option>
+                        </select>
+
+                    </div>
+
+                    <!-- Kendaraan -->
+
+                    <div class="input-group">
+
+                        <label>Kendaraan</label>
+
+                        <select>
+                            <option>Avanza</option>
+                            <option>Innova</option>
+                            <option>Hiace</option>
+                            <option>Vario</option>
+                            <option>NMAX</option>
+                            <option>Sepeda Lipat</option>
+                        </select>
+
+                    </div>
+
+                    <!-- Pengemudi -->
+
+                    <div class="input-group">
+
+                        <label>Pengemudi</label>
+
+                        <select>
+                            <option>Budi</option>
+                            <option>Andi</option>
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- Upload Tanda Tangan PDF -->
+
+                <div class="input-group">
+
+                    <label>Tanda Tangan (PDF)</label>
+
+                    <input 
+                        type="file"
+                        accept="application/pdf"
+                        id="signatureInput"
+                    >
+
+                </div>
+
+                <button type="submit" class="btn-1">
+                    Submit Peminjaman
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+
+            <h2>Riwayat Peminjaman</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Nama</th>
+                        <th>Kendaraan</th>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Jasmine</td>
+                        <td>Avanza</td>
+                        <td>04 Juni 2026</td>
+                        <td>
+                            <span class="success">
+                                Disetujui
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Kevin</td>
+                        <td>Hiace</td>
+                        <td>05 Juni 2026</td>
+                        <td>
+                            <span class="pending">
+                                Pending
+                            </span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const signatureInput = document.getElementById("signatureInput");
+const preview = document.getElementById("previewSignature");
+
+signatureInput.addEventListener("change", function(){
+
+    const file = this.files[0];
+
+    if(file){
+
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

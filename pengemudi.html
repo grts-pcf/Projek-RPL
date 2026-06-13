@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pengemudi</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="logo">
+
+    <img 
+        src="logo ubd.png" 
+        alt="Logo UBD"
+        class="logo-img"
+    >
+
+    <h2>UBD Transport</h2>
+
+</div>
+
+        <ul class="menu">
+
+            <li>
+                <a href="index.html">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="data-peminjam.html">Data Peminjam</a>
+            </li>
+
+            <li>
+                <a href="riwayat.html">Riwayat Peminjaman</a>
+            </li>
+
+            <li>
+                <a href="kendaraan.html">Master Kendaraan</a>
+            </li>
+
+            <li class="active">
+                <a href="pengemudi.html">Pengemudi</a>
+            </li>
+
+            <li>
+                <a href="laporan.html">Laporan</a>
+            </li>
+
+            <li>
+                <a href="pengaturan.html">Pengaturan</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Navbar -->
+        <div class="navbar">
+
+            <h1>Data Pengemudi</h1>
+
+            <div class="profile">
+                <a href="LOGIN.html">Admin</a>
+            </div>
+
+        </div>
+
+        <!-- Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Pengemudi</h3>
+                <p>10</p>
+            </div>
+
+            <div class="card">
+                <h3>Aktif</h3>
+                <p>8</p>
+            </div>
+
+            <div class="card">
+                <h3>Cuti</h3>
+                <p>1</p>
+            </div>
+
+            <div class="card">
+                <h3>Tidak Aktif</h3>
+                <p>1</p>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+
+                <h2>Daftar Pengemudi</h2>
+
+                <button style="
+                    width:auto;
+                    padding:12px 20px;
+                " class="btn-1">
+                    + Tambah Pengemudi
+                </button>
+
+            </div>
+
+            <!-- Filter -->
+            <div class="row">
+
+                <div class="input-group">
+                    <label>Cari Pengemudi</label>
+                    <input type="text" placeholder="Masukkan nama pengemudi">
+                </div>
+
+                <div class="input-group">
+                    <label>Status</label>
+                    <select>
+                        <option>Semua</option>
+                        <option>Aktif</option>
+                        <option>Cuti</option>
+                        <option>Tidak Aktif</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Table -->
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Pengemudi</th>
+                        <th>No Telepon</th>
+                        <th>SIM</th>
+                        <th>Alamat</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td>Budi Santoso</td>
+                        <td>08123456789</td>
+                        <td>SIM A</td>
+                        <td>Tangerang</td>
+                        <td>
+                            <span class="success">
+                                Aktif
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1">
+                                    Hapus
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>Andi Wijaya</td>
+                        <td>08987654321</td>
+                        <td>SIM B1</td>
+                        <td>Jakarta</td>
+                        <td>
+                            <span class="pending">
+                                Cuti
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1">
+                                    Hapus
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Rian Saputra</td>
+                        <td>082233445566</td>
+                        <td>SIM A</td>
+                        <td>Bekasi</td>
+                        <td>
+
+                            <span style="
+                                background:#fee2e2;
+                                color:#991b1b;
+                                padding:8px 12px;
+                                border-radius:8px;
+                            ">
+                                Tidak Aktif
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1">
+                                    Hapus
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

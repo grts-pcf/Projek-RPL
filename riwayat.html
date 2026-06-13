@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Peminjaman</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="logo">
+
+    <img 
+        src="logo ubd.png" 
+        alt="Logo UBD"
+        class="logo-img"
+    >
+
+    <h2>UBD Transport</h2>
+
+</div>
+
+        <ul class="menu">
+
+            <li>
+                <a href="index.html">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="data-peminjam.html">Data Peminjam</a>
+            </li>
+
+            <li class="active">
+                <a href="riwayat.html">Riwayat Peminjaman</a>
+            </li>
+
+            <li>
+                <a href="kendaraan.html">Master Kendaraan</a>
+            </li>
+
+            <li>
+                <a href="pengemudi.html">Pengemudi</a>
+            </li>
+
+            <li>
+                <a href="laporan.html">Laporan</a>
+            </li>
+
+            <li>
+                <a href="pengaturan.html">Pengaturan</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Navbar -->
+        <div class="navbar">
+
+            <h1>Riwayat Peminjaman</h1>
+
+            <div class="profile">
+                <a href="LOGIN.html">Admin</a>
+            </div>
+
+        </div>
+
+        <!-- Statistik -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Peminjaman</h3>
+                <p>120</p>
+            </div>
+
+            <div class="card">
+                <h3>Disetujui</h3>
+                <p>95</p>
+            </div>
+
+            <div class="card">
+                <h3>Pending</h3>
+                <p>15</p>
+            </div>
+
+            <div class="card">
+                <h3>Ditolak</h3>
+                <p>10</p>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+
+                <h2>Daftar Riwayat Peminjaman</h2>
+
+                <button style="
+                    width:auto;
+                    padding:12px 20px;
+                " class="btn-1">
+                    Export PDF
+                </button>
+
+            </div>
+
+            <!-- Filter -->
+            <div class="row">
+
+                <div class="input-group">
+                    <label>Cari Nama</label>
+                    <input type="text" placeholder="Masukkan nama">
+                </div>
+
+                <div class="input-group">
+                    <label>Status</label>
+                    <select>
+                        <option>Semua</option>
+                        <option>Disetujui</option>
+                        <option>Pending</option>
+                        <option>Ditolak</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Tanggal</label>
+                    <input type="date">
+                </div>
+
+            </div>
+
+            <!-- Table -->
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Kendaraan</th>
+                        <th>Pengemudi</th>
+                        <th>Tanggal</th>
+                        <th>Jam</th>
+                        <th>Tujuan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td>Jasmine</td>
+                        <td>Avanza</td>
+                        <td>Budi</td>
+                        <td>04 Juni 2026</td>
+                        <td>18:30 - 21:30</td>
+                        <td>Seminar Business</td>
+                        <td>
+                            <span class="success">
+                                Disetujui
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1">
+                                    Review
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1">
+                                    Hapus
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>Kevin</td>
+                        <td>Hiace</td>
+                        <td>Andi</td>
+                        <td>05 Juni 2026</td>
+                        <td>09:00 - 12:00</td>
+                        <td>Kunjungan Industri</td>
+                        <td>
+                            <span class="pending">
+                                Pending
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1">
+                                    Review
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1">
+                                    Hapus
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Michael</td>
+                        <td>Innova</td>
+                        <td>Rian</td>
+                        <td>06 Juni 2026</td>
+                        <td>13:00 - 16:00</td>
+                        <td>Meeting Client</td>
+                        <td>
+                            <span style="
+                                background:#fee2e2;
+                                color:#991b1b;
+                                padding:8px 12px;
+                                border-radius:8px;
+                            ">
+                                Ditolak
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1">
+                                    Review
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1">
+                                    Hapus
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
