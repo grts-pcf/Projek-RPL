@@ -114,12 +114,12 @@
 
                 <h2>Daftar Riwayat Peminjaman</h2>
 
-                <button style="
-                    width:auto;
-                    padding:12px 20px;
-                " class="btn-1">
-                    Export PDF
-                </button>
+            <button id="btnExport" style="
+                width:auto;
+                padding:12px 20px;
+            " class="btn-1">
+                Export PDF
+            </button>
 
             </div>
 
@@ -128,12 +128,12 @@
 
                 <div class="input-group">
                     <label>Cari Nama</label>
-                    <input type="text" placeholder="Masukkan nama">
+                    <input type="text" id="searchNama" placeholder="Masukkan nama">
                 </div>
 
                 <div class="input-group">
                     <label>Status</label>
-                    <select>
+                    <select id="searchStatus">
                         <option>Semua</option>
                         <option>Disetujui</option>
                         <option>Pending</option>
@@ -143,7 +143,7 @@
 
                 <div class="input-group">
                     <label>Tanggal</label>
-                    <input type="date">
+                    <input type="date" id="searchTanggal">
                 </div>
 
             </div>
@@ -174,7 +174,7 @@
                         <td>Jasmine</td>
                         <td>Avanza</td>
                         <td>Budi</td>
-                        <td>04 Juni 2026</td>
+                        <td data-date="2026-06-04">04 Juni 2026</td>
                         <td>18:30 - 21:30</td>
                         <td>Seminar Business</td>
                         <td>
@@ -189,27 +189,30 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
-                                </button>
+                                    </button>
+                                
 
                                 <button style="
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnReview">
                                     Review
-                                </button>
+                                    </button>
+                                
 
                                 <button style="
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnHapus">
                                     Hapus
-                                </button>
+                                    </button>
+                                
 
                             </div>
                         </td>
@@ -220,7 +223,7 @@
                         <td>Kevin</td>
                         <td>Hiace</td>
                         <td>Andi</td>
-                        <td>05 Juni 2026</td>
+                        <td data-date="2026-06-05">05 Juni 2026</td>
                         <td>09:00 - 12:00</td>
                         <td>Kunjungan Industri</td>
                         <td>
@@ -235,27 +238,30 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
-                                </button>
+                                    </button>
+                                
 
                                 <button style="
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnReview">
                                     Review
-                                </button>
+                                    </button>
+                                
 
                                 <button style="
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnHapus">
                                     Hapus
-                                </button>
+                                    </button>
+                                
 
                             </div>
                         </td>
@@ -266,7 +272,7 @@
                         <td>Michael</td>
                         <td>Innova</td>
                         <td>Rian</td>
-                        <td>06 Juni 2026</td>
+                        <td data-date="2026-06-06">06 Juni 2026</td>
                         <td>13:00 - 16:00</td>
                         <td>Meeting Client</td>
                         <td>
@@ -286,33 +292,36 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
-                                </button>
+                                    </button>
+                                
 
                                 <button style="
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnReview">
                                     Review
-                                </button>
+                                    </button>
+                                
 
                                 <button style="
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnHapus">
                                     Hapus
-                                </button>
+                                    </button>
+                                
 
                             </div>
                         </td>
                     </tr>
 
-                </tbody>
+                <tbody id="dataRiwayat">
 
             </table>
 
@@ -322,5 +331,6 @@
 
 </div>
 
+<script src="riwayat.js"></script>
 </body>
 </html>

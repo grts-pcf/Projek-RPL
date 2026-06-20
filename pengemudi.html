@@ -114,7 +114,7 @@
 
                 <h2>Daftar Pengemudi</h2>
 
-                <button style="
+                <button id="btnTambahPengemudi" style="
                     width:auto;
                     padding:12px 20px;
                 " class="btn-1">
@@ -128,12 +128,12 @@
 
                 <div class="input-group">
                     <label>Cari Pengemudi</label>
-                    <input type="text" placeholder="Masukkan nama pengemudi">
+                   <input type="text" id="searchPengemudi" placeholder="Masukkan nama pengemudi">
                 </div>
 
                 <div class="input-group">
                     <label>Status</label>
-                    <select>
+                    <select id="searchStatus">
                         <option>Semua</option>
                         <option>Aktif</option>
                         <option>Cuti</option>
@@ -160,7 +160,7 @@
 
                 </thead>
 
-                <tbody>
+                <tbody id="dataPengemudi">
 
                     <tr>
                         <td>1</td>
@@ -180,7 +180,7 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
 
@@ -189,7 +189,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
                                 </button>
 
@@ -198,7 +198,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnHapus">
                                     Hapus
                                 </button>
 
@@ -224,7 +224,7 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
 
@@ -233,7 +233,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
                                 </button>
 
@@ -242,7 +242,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnHapus">
                                     Hapus
                                 </button>
 
@@ -276,7 +276,7 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
 
@@ -285,7 +285,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
                                 </button>
 
@@ -294,7 +294,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnHapus">
                                     Hapus
                                 </button>
 
@@ -312,5 +312,6 @@
 
 </div>
 
+<script src="pengemudi.js"></script>
 </body>
 </html>

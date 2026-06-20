@@ -89,7 +89,7 @@
 
                 <h2>Daftar Data Peminjam</h2>
 
-                <button style="
+                <button id="btnTambah" style="
                     width:auto;
                     padding:12px 20px;
                 " class="btn-1">
@@ -101,8 +101,11 @@
             <!-- Search -->
             <div class="input-group">
 
-                <input type="text"
-                placeholder="Cari nama peminjam...">
+                <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari nama peminjam..."
+>
 
             </div>
 
@@ -123,7 +126,7 @@
 
                 </thead>
 
-                <tbody>
+                <tbody id="dataPeminjam">
 
                     <tr>
                         <td>1</td>
@@ -143,16 +146,16 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
                                 
                                 <button style="
-                                        width:auto;
-                                        padding:8px 15px;
-                                        font-size:14px;
-                                        background:#ef4444;
-                                " class="btn-1">
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1 btnHapus">
                                     Hapus
                                 </button>
 
@@ -174,20 +177,20 @@
                         <td>
                             <div class="action-buttons">
 
-                                <button style="
+                               <button style="
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
                                 
                                 <button style="
-                                        width:auto;
-                                        padding:8px 15px;
-                                        font-size:14px;
-                                        background:#ef4444;
-                                " class="btn-1">
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1 btnHapus">
                                     Hapus
                                 </button>
 
@@ -204,6 +207,6 @@
     </div>
 
 </div>
-
+<script src="script.js"></script>
 </body>
 </html>

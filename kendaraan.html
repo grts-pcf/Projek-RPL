@@ -82,22 +82,22 @@
 
             <div class="card">
                 <h3>Total Kendaraan</h3>
-                <p>25</p>
+                <p>8</p>
             </div>
 
             <div class="card">
                 <h3>Tersedia</h3>
-                <p>18</p>
+                <p>1</p>
             </div>
 
             <div class="card">
                 <h3>Dipinjam</h3>
-                <p>5</p>
+                <p>6</p>
             </div>
 
             <div class="card">
                 <h3>Maintenance</h3>
-                <p>2</p>
+                <p>1</p>
             </div>
 
         </div>
@@ -114,7 +114,7 @@
 
                 <h2>Daftar Kendaraan</h2>
 
-                <button style="
+                <button id="btnTambahKendaraan" style="
                     width:auto;
                     padding:12px 20px;
                 " class="btn-1">
@@ -128,12 +128,12 @@
 
                 <div class="input-group">
                     <label>Cari Kendaraan</label>
-                    <input type="text" placeholder="Masukkan nama kendaraan">
+                    <input type="text" id="searchKendaraan" placeholder="Masukkan nama kendaraan">
                 </div>
 
                 <div class="input-group">
                     <label>Status</label>
-                    <select>
+                    <select id="searchStatus">
                         <option>Semua</option>
                         <option>Tersedia</option>
                         <option>Dipinjam</option>
@@ -150,26 +150,22 @@
 
                     <tr>
                         <th>No</th>
-                        <th>Nama Kendaraan</th>
-                        <th>Plat Nomor</th>
-                        <th>Tipe</th>
+                        <th>Merk/Jenis</th>
                         <th>Tahun</th>
-                        <th>Kapasitas</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
+                        <th>No Polisi</th>
+                        <th>Tanggal Pajak STNK</th>
                     </tr>
 
                 </thead>
 
-                <tbody>
+                <tbody id="dataKendaraan">
 
                     <tr>
                         <td>1</td>
-                        <td>Toyota Avanza</td>
-                        <td>B 1234 UBD</td>
-                        <td>MPV</td>
-                        <td>2023</td>
-                        <td>7 Orang</td>
+                        <td>Daihatsu Grandmax</td>
+                        <td>2009</td>
+                        <td>B 1597 CFF</td>
+                        <td>19 Oktober</td>
                         <td>
                             <span class="success">
                                 Tersedia
@@ -182,7 +178,7 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
 
@@ -191,7 +187,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
                                 </button>
 
@@ -200,7 +196,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnService">
                                     Services
                                 </button>
 
@@ -210,11 +206,10 @@
 
                     <tr>
                         <td>2</td>
-                        <td>Toyota Hiace</td>
-                        <td>B 5678 UBD</td>
-                        <td>Minibus</td>
-                        <td>2022</td>
-                        <td>15 Orang</td>
+                        <td>Toyota Avanza</td>
+                        <td>2012</td>
+                        <td>B 1051 CFY</td>
+                        <td>12 Desember</td>
                         <td>
                             <span class="pending">
                                 Dipinjam
@@ -227,7 +222,7 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
 
@@ -236,7 +231,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
                                 </button>
 
@@ -255,11 +250,10 @@
 
                     <tr>
                         <td>3</td>
-                        <td>Toyota Innova</td>
-                        <td>B 9999 UBD</td>
-                        <td>SUV</td>
-                        <td>2021</td>
-                        <td>7 Orang</td>
+                        <td>Suzuki Ertiga</td>
+                        <td>2014</td>
+                        <td>B 1432 CKI</td>
+                        <td>02 April</td>
                         <td>
 
                             <span style="
@@ -280,7 +274,7 @@
                                     width:auto;
                                     padding:8px 15px;
                                     font-size:14px;
-                                " class="btn-1">
+                                " class="btn-1 btnEdit">
                                     Edit
                                 </button>
 
@@ -289,7 +283,7 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#f59e0b;
-                                " class="btn-1">
+                                " class="btn-1 btnDetail">
                                     Detail
                                 </button>
 
@@ -298,7 +292,227 @@
                                     padding:8px 15px;
                                     font-size:14px;
                                     background:#ef4444;
-                                " class="btn-1">
+                                " class="btn-1 btnService">
+                                    Services
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>4</td>
+                        <td>Suzuki Ertiga</td>
+                        <td>2014</td>
+                        <td>B 1573 CKI</td>
+                        <td>07 April</td>
+                        <td>
+                            <span class="pending">
+                                Dipinjam
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1 btnEdit">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1 btnDetail">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1 btnService">
+                                    Services
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>5</td>
+                        <td>Toyota Vios</td>
+                        <td>2015</td>
+                        <td>B 1924 CAA</td>
+                        <td>18 Agustus</td>
+                        <td>
+                            <span class="pending">
+                                Dipinjam
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1 btnEdit">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1 btnDetail">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1 btnService">
+                                    Services
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>6</td>
+                        <td>Toyota HiAce</td>
+                        <td>2017</td>
+                        <td>B 7290 CDA</td>
+                        <td>06 November</td>
+                        <td>
+                            <span class="pending">
+                                Dipinjam
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1 btnEdit">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1 btnDetail">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1 btnService">
+                                    Services
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>7</td>
+                        <td>Yamaha Vega R</td>
+                        <td>2004</td>
+                        <td>B 6335 CAX</td>
+                        <td>26 Juli</td>
+                        <td>
+                            <span class="pending">
+                                Dipinjam
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1 btnEdit">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1 btnDetail">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1 btnService">
+                                    Services
+                                </button>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>8</td>
+                        <td>Honda Revo</td>
+                        <td>2013</td>
+                        <td>B 6157 CXJ</td>
+                        <td>22 Oktober</td>
+                        <td>
+                            <span class="pending">
+                                Dipinjam
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                " class="btn-1 btnEdit">
+                                    Edit
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#f59e0b;
+                                " class="btn-1 btnDetail">
+                                    Detail
+                                </button>
+
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    background:#ef4444;
+                                " class="btn-1 btnService">
                                     Services
                                 </button>
 
@@ -316,5 +530,6 @@
 
 </div>
 
+<script src="kendaraan.js"></script>
 </body>
 </html>
