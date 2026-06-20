@@ -36,19 +36,54 @@ document.getElementById("btnTambahPengemudi").addEventListener("click", function
 document.addEventListener("click", function(e){
 
     // Edit
-    if(e.target.classList.contains("btnEdit")){
+if(e.target.classList.contains("btnEdit")){
 
-        let row = e.target.closest("tr");
+    let row = e.target.closest("tr");
 
-        let namaBaru = prompt(
-            "Edit Nama",
-            row.cells[1].innerText
-        );
+    let namaBaru = prompt(
+        "Nama Pengemudi",
+        row.cells[1].innerText
+    );
 
-        if(namaBaru){
-            row.cells[1].innerText = namaBaru;
-        }
+    let statusBaru = prompt(
+        "Status (Aktif / Cuti / Tidak Aktif)",
+        row.cells[5].innerText
+    );
+
+    if(namaBaru){
+        row.cells[1].innerText = namaBaru;
     }
+
+    if(statusBaru){
+
+        if(statusBaru.toLowerCase() === "aktif"){
+
+            row.cells[5].innerHTML =
+            '<span class="success">Aktif</span>';
+
+        }
+
+        else if(statusBaru.toLowerCase() === "cuti"){
+
+            row.cells[5].innerHTML =
+            '<span class="pending">Cuti</span>';
+
+        }
+
+        else if(statusBaru.toLowerCase() === "tidak aktif"){
+
+            row.cells[5].innerHTML =
+            `<span style="
+                background:#fee2e2;
+                color:#991b1b;
+                padding:8px 12px;
+                border-radius:8px;
+            ">Tidak Aktif</span>`;
+
+        }
+
+    }
+}
 
     // Detail
     if(e.target.classList.contains("btnDetail")){
