@@ -142,7 +142,8 @@ $queryRiwayat = mysqli_query($conn,"
             <button id="btnExport" style="
                 width:auto;
                 padding:12px 20px;
-            " class="btn-1">
+            " class="btn-1"
+            onclick="window.location.href='export_pdf.php'">
                 Export PDF
             </button>
 
@@ -206,8 +207,8 @@ $queryRiwayat = mysqli_query($conn,"
                         <td><?= $r['merk_jenis']; ?></td>
                         <td><?= $r['pengemudi']; ?></td>
 
-                        <td>
-                            <?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?> 
+                        <td data-tanggal="<?= $r['tanggal_pinjam']; ?>">
+                            <?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?>
                             -
                             <?= date('d F Y', strtotime($r['tanggal_kembali'])); ?>
                         </td>
@@ -254,29 +255,44 @@ $queryRiwayat = mysqli_query($conn,"
                         <td>
                             <div class="action-buttons">
 
-                                <button
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px; "
                                     class="btn-1 btnDetail"
-                                    style="width:auto;padding:8px 15px;font-size:14px;">
+                                    data-peminjam="<?= $r['nama_peminjam']; ?>"
+                                    data-kendaraan="<?= $r['merk_jenis']; ?>"
+                                    data-pengemudi="<?= $r['pengemudi']; ?>"
+                                    data-tujuan="<?= $r['tujuan']; ?>"
+                                    data-tanggal="<?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?>"
+                                    data-kembali="<?= date('d F Y', strtotime($r['tanggal_kembali'])); ?>">
                                     Detail
                                 </button>
 
-                                <a href="review.php?id=<?= $r['id']; ?>"
-                                    class="btn-1"
+                                <button
+                                    class="btn-1 btnReview"
+                                    data-id="<?= $r['id']; ?>"
+                                    data-nama="<?= $r['nama_peminjam']; ?>"
                                     style="
                                         width:auto;
                                         padding:8px 15px;
                                         font-size:14px;
                                         background:#f59e0b;
-                                        text-decoration:none;
-                                        display:inline-block;
                                     "
                                 >
                                     Review
-                                </a>
+                                </button>
 
-                                <button
+                                <button 
+                                    style="
+                                        width:auto;
+                                        padding:8px 15px;
+                                        font-size:14px;
+                                        background:#ef4444;"
                                     class="btn-1 btnHapus"
-                                    style="width:auto;padding:8px 15px;font-size:14px;background:#ef4444;">
+                                    data-id="<?= $r['id']; ?>"
+                                    data-nama="<?= $r['nama_peminjam']; ?>"
+                                >
                                     Hapus
                                 </button>
 
@@ -296,6 +312,348 @@ $queryRiwayat = mysqli_query($conn,"
 
 </div>
 
-<script src="riwayat.js"></script>
+<!-- Modal Detail -->
+<div id="modalDetail" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="detail">&times;</span>
+
+        <h2>Detail Peminjaman</h2>
+
+        <div class="detail-container">
+
+            <div class="detail-row">
+                <span>Peminjam</span>
+                <strong id="d_peminjam"></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Kendaraan</span>
+                <strong id="d_kendaraan"></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Pengemudi</span>
+                <strong id="d_pengemudi"></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Tujuan</span>
+                <strong id="d_tujuan"></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Tanggal Pinjam</span>
+                <strong id="d_tanggal"></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Tanggal Kembali</span>
+                <strong id="d_kembali"></strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal Review -->
+<div id="modalReview" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="review">&times;</span>
+
+        <p>
+            Apakah peminjaman atas nama
+            <strong id="reviewNama"></strong>
+            akan disetujui?
+        </p>
+
+        <br>
+
+        <div style="display:flex; gap:10px;">
+
+            <a
+                id="btnSetujui"
+                href="#"
+                class="btn-1"
+                style="
+                    text-align: center;
+                    background:#22c55e;"
+            >
+                Setujui
+            </a>
+
+            <a
+                id="btnTolak"
+                href="#"
+                class="btn-1"
+                style="
+                    text-align: center;
+                    background:#ef4444;"
+            >
+                Tolak
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal Hapus -->
+<div id="modalHapus" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="hapus">&times;</span>
+
+        <h2>Konfirmasi Hapus</h2>
+
+        <p>
+            Yakin ingin menghapus data peminjaman
+            <strong id="hapusNama"></strong> ?
+        </p>
+
+        <br>
+
+        <div style="display:flex; gap:10px;">
+
+            <a
+                id="btnKonfirmasiHapus"
+                href="#"
+                class="btn-1"
+                style="
+                    text-align: center;
+                    background:#ef4444;"
+            >
+                Ya, Hapus
+            </a>
+
+            <button
+                type="button"
+                id="btnBatalHapus"
+                class="btn-1"
+                style="
+                    text-align: center;
+                    background:#6b7280;"
+            >
+                Batal
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const modalDetail =
+document.getElementById('modalDetail');
+
+document.querySelectorAll('.btnDetail')
+.forEach(btn=>{
+
+    btn.addEventListener('click',function(){
+
+        document.getElementById('d_peminjam').textContent =
+            this.dataset.peminjam;
+
+        document.getElementById('d_kendaraan').textContent =
+            this.dataset.kendaraan;
+
+        document.getElementById('d_pengemudi').textContent =
+            this.dataset.pengemudi;
+
+        document.getElementById('d_tujuan').textContent =
+            this.dataset.tujuan;
+
+        document.getElementById('d_tanggal').textContent =
+            this.dataset.tanggal;
+
+        document.getElementById('d_kembali').textContent =
+            this.dataset.kembali;
+
+        modalDetail.style.display = 'block';
+
+    });
+
+});
+
+const modalReview =
+document.getElementById('modalReview');
+
+const reviewNama =
+document.getElementById('reviewNama');
+
+const btnSetujui =
+document.getElementById('btnSetujui');
+
+const btnTolak =
+document.getElementById('btnTolak');
+
+document.querySelectorAll('.btnReview')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        let id = this.dataset.id;
+
+        reviewNama.textContent =
+        this.dataset.nama;
+
+        btnSetujui.href =
+        'proses/update_status.php?id=' +
+        id +
+        '&status=disetujui';
+
+        btnTolak.href =
+        'proses/update_status.php?id=' +
+        id +
+        '&status=ditolak';
+
+        modalReview.style.display =
+        'block';
+
+    });
+
+});
+
+window.addEventListener('click', function(e){
+
+    if(e.target == modalReview){
+        modalReview.style.display =
+        'none';
+    }
+
+});
+
+const modalHapus =
+document.getElementById('modalHapus');
+
+const hapusNama =
+document.getElementById('hapusNama');
+
+const btnKonfirmasiHapus =
+document.getElementById('btnKonfirmasiHapus');
+
+document.querySelectorAll('.btnHapus')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        const id = this.dataset.id;
+
+        hapusNama.textContent =
+        this.dataset.nama;
+
+        btnKonfirmasiHapus.href =
+        'proses/hapus_riwayat.php?id=' + id;
+
+        modalHapus.style.display =
+        'block';
+
+    });
+
+});
+
+document.getElementById('btnBatalHapus')
+.addEventListener('click', function(){
+
+    modalHapus.style.display =
+    'none';
+
+});
+
+document.querySelectorAll('.close').forEach(btn => {
+
+    btn.addEventListener('click', function () {
+
+        if (this.dataset.modal === 'detail') {
+            modalDetail.style.display = 'none';
+        }
+
+        if (this.dataset.modal === 'review') {
+            modalReview.style.display = 'none';
+        }
+
+        if (this.dataset.modal === 'hapus') {
+            modalHapus.style.display = 'none';
+        }
+
+    });
+
+});
+
+const searchNama = document.getElementById('searchNama');
+const searchStatus = document.getElementById('searchStatus');
+const searchTanggal = document.getElementById('searchTanggal');
+
+function filterRiwayat() {
+
+    const nama = searchNama.value.toLowerCase();
+    const status = searchStatus.value.toLowerCase();
+    const tanggal = searchTanggal.value;
+
+    const rows = document.querySelectorAll('#dataRiwayat tr');
+
+    rows.forEach(row => {
+
+        const namaRow =
+            row.cells[1].textContent.toLowerCase();
+
+        const tanggalRow =
+            row.cells[4].textContent.toLowerCase();
+
+        const statusRow =
+            row.cells[8].textContent.toLowerCase();
+
+        let tampil = true;
+
+        // Filter nama
+        if (
+            nama !== '' &&
+            !namaRow.includes(nama)
+        ) {
+            tampil = false;
+        }
+
+        // Filter status
+        if (
+            status !== 'semua' &&
+            !statusRow.includes(status)
+        ) {
+            tampil = false;
+        }
+
+        // Filter tanggal
+        if (tanggal !== '') {
+
+            const tanggalRow =
+                row.cells[4].dataset.tanggal;
+
+            if (tanggalRow !== tanggal) {
+                tampil = false;
+            }
+
+        }
+
+        row.style.display =
+            tampil ? '' : 'none';
+
+    });
+
+}
+
+searchNama.addEventListener('keyup', filterRiwayat);
+searchStatus.addEventListener('change', filterRiwayat);
+searchTanggal.addEventListener('change', filterRiwayat);
+
+</script>
+
 </body>
 </html>

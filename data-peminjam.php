@@ -110,13 +110,6 @@ $query = mysqli_query($conn, "
 
                 <h2>Daftar Data Peminjam</h2>
 
-                <button id="btnTambah" style="
-                    width:auto;
-                    padding:12px 20px;
-                " class="btn-1">
-                    + Tambah Data
-                </button>
-
             </div>
 
             <!-- Search -->
@@ -128,7 +121,7 @@ $query = mysqli_query($conn, "
                 placeholder="Cari nama peminjam..."
 >
 
-            </div>
+        </div>
 
             <!-- Table -->
             <table>
@@ -215,15 +208,28 @@ $query = mysqli_query($conn, "
                         <td>
                             <div class="action-buttons">
 
-                                <button
-                                    class="btn-1 btnEdit"
-                                    style="width:auto;padding:8px 15px;font-size:14px;">
+                                <button style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    font-size:14px;
+                                    "class = "btn-1 btnEdit"
+                                    data-id="<?= $row['id']; ?>"
+                                    data-nama="<?= $row['nama_peminjam']; ?>"
+                                    data-unit="<?= $row['unit']; ?>"
+                                    data-telp="<?= $row['no_telepon']; ?>">
                                     Edit
                                 </button>
 
-                                <button
-                                    class="btn-1 btnHapus"
-                                    style="width:auto;padding:8px 15px;font-size:14px;background:#ef4444;">
+                                <button 
+                                    style="
+                                        width:auto;
+                                        padding:8px 15px;
+                                        font-size:14px;
+                                        background:#ef4444;"
+                                    class="btn-1 btnHapusPeminjam"
+                                    data-id="<?= $row['id']; ?>"
+                                    data-nama="<?= $row['nama_peminjam']; ?>"
+                                >
                                     Hapus
                                 </button>
 
@@ -237,11 +243,186 @@ $query = mysqli_query($conn, "
 
             </table>
 
+            <div id="modalEdit" class="modal">
+
+            <div class="modal-content">
+
+                <span class="close" data-modal="edit">&times;</span>
+
+                <h2>Edit Data Peminjam</h2>
+
+                <form action="proses/update_peminjam.php" method="POST">
+
+                    <input type="hidden" id="edit_id" name="id">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input type="text" id="edit_nama" name="nama_peminjam">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <input type="text" id="edit_unit" name="unit">
+                        </div>
+
+                        <div class="form-group">
+                            <label>No Telepon</label>
+                            <input type="text" id="edit_telp" name="no_telepon">
+                        </div>
+
+                    </div>
+
+                    <div class="form-action">
+                        <button type="submit" class="btn-2">
+                            Simpan
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
         </div>
 
     </div>
 
 </div>
-<script src="script.js"></script>
+
+<!-- Modal Hapus Peminjam -->
+<div id="modalHapusPeminjam" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="hapuspeminjam">&times;</span>
+
+        <h2>Hapus Data Peminjam</h2>
+
+        <p>
+            Yakin ingin menghapus data
+            <strong id="namaPeminjamHapus"></strong>?
+        </p>
+
+        <br>
+
+        <div style="display:flex; gap:10px;">
+
+            <a
+                id="btnKonfirmasiHapusPeminjam"
+                href="#"
+                class="btn-1"
+                style="
+                    text-align: center;
+                    background:#ef4444;"
+            >
+                Ya, Hapus
+            </a>
+
+            <button
+                type="button"
+                id="btnBatalHapusPeminjam"
+                class="btn-1"
+                style="
+                    text-align: center;
+                    background:#6b7280;"
+            >
+                Batal
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const modal = document.getElementById('modalEdit');
+
+document.querySelectorAll('.btnEdit').forEach(btn=>{
+
+    btn.addEventListener('click',function(){
+
+        document.getElementById('edit_id').value =
+            this.dataset.id;
+
+        document.getElementById('edit_nama').value =
+            this.dataset.nama;
+
+        document.getElementById('edit_unit').value =
+            this.dataset.unit;
+
+        document.getElementById('edit_telp').value =
+            this.dataset.telp;
+
+        modal.style.display = 'block';
+
+    });
+
+});
+
+window.onclick = function(event){
+
+    if(event.target == modal){
+
+        modal.style.display='none';
+
+    }
+
+}
+
+const modalHapusPeminjam =
+document.getElementById('modalHapusPeminjam');
+
+const namaPeminjamHapus =
+document.getElementById('namaPeminjamHapus');
+
+const btnKonfirmasiHapusPeminjam =
+document.getElementById('btnKonfirmasiHapusPeminjam');
+
+document
+.querySelectorAll('.btnHapusPeminjam')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        const id = this.dataset.id;
+
+        namaPeminjamHapus.textContent =
+        this.dataset.nama;
+
+        btnKonfirmasiHapusPeminjam.href =
+        'proses/hapus_peminjam.php?id=' + id;
+
+        modalHapusPeminjam.style.display =
+        'block';
+
+    });
+
+});
+
+document
+.getElementById('btnBatalHapusPeminjam')
+.addEventListener('click', function(){
+
+    modalHapusPeminjam.style.display =
+    'none';
+
+});
+
+document.querySelector('.close')
+.addEventListener('click',function(){
+
+    modalEdit.style.display='none';
+    modalHapusPeminjam.style.display =
+    'none';
+
+});
+
+</script>
+
 </body>
 </html>

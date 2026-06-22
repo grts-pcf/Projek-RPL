@@ -6,6 +6,17 @@ if (!isset($_SESSION['admin'])) {
     exit();
 }
 require_once "config/koneksi.php";
+
+$queryRiwayat = mysqli_query($conn,"
+    SELECT
+        r.*,
+        k.merk_jenis
+    FROM riwayat r
+    LEFT JOIN kendaraan k
+        ON r.kendaraan = k.no_polisi
+    ORDER BY r.id DESC
+");
+
 ?>
 
 <?php
@@ -322,29 +333,50 @@ $supir = mysqli_query($conn,"
 
                 <tbody>
 
+                    <?php
+                    $no = 1;
+                    while ($r = mysqli_fetch_assoc($queryRiwayat)) :
+                    ?>
+
                     <tr>
-                        <td>Jasmine</td>
-                        <td>Avanza</td>
-                        <td>04 Juni 2026</td>
+                        <td><?= $r['nama_peminjam']; ?></td>
+                        <td><?= $r['merk_jenis']; ?></td>
                         <td>
-                            <span class="success">
-                                Disetujui
-                            </span>
+                            <?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?> 
+                            -
+                            <?= date('d F Y', strtotime($r['tanggal_kembali'])); ?>
+                        </td>
+                        <td>
+
+                            <?php if($r['status'] == 'disetujui'): ?>
+
+                                <span class="success">
+                                    Disetujui
+                                </span>
+
+                            <?php elseif($r['status'] == 'pending'): ?>
+
+                                <span class="pending">
+                                    Pending
+                                </span>
+
+                            <?php else: ?>
+
+                                <span style="
+                                    background:#fee2e2;
+                                    color:#991b1b;
+                                    padding:8px 12px;
+                                    border-radius:8px;
+                                ">
+                                    Ditolak
+                                </span>
+
+                            <?php endif; ?>
+
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>Kevin</td>
-                        <td>Hiace</td>
-                        <td>05 Juni 2026</td>
-                        <td>
-                            <span class="pending">
-                                Pending
-                            </span>
-                        </td>
-                    </tr>
-
-                </tbody>
+                    <?php endwhile; ?>
 
             </table>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Jun 2026 pada 10.10
+-- Waktu pembuatan: 22 Jun 2026 pada 12.11
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -60,7 +60,8 @@ CREATE TABLE `data_peminjam` (
 --
 
 INSERT INTO `data_peminjam` (`id`, `nama_peminjam`, `unit`, `no_telepon`, `status`, `created_at`) VALUES
-(1, 'Narson', 'FST', '089876543210', 'aktif', '2026-06-22 07:49:41');
+(3, 'Narson', 'FST', '089876543210', 'aktif', '2026-06-22 08:44:43'),
+(4, 'Joko', 'FSH', '088765432109', 'aktif', '2026-06-22 09:57:52');
 
 -- --------------------------------------------------------
 
@@ -117,7 +118,8 @@ CREATE TABLE `riwayat` (
 --
 
 INSERT INTO `riwayat` (`id`, `nama_peminjam`, `kendaraan`, `pengemudi`, `tanggal_pinjam`, `jam_berangkat`, `tanggal_kembali`, `jam_kembali`, `keperluan`, `tujuan`, `status`, `created_at`) VALUES
-(1, 'Narson', 'B 1597 CFF', 'Uang Ali', '2026-06-22', '20:00:00', '2026-06-24', '07:00:00', 'tes', 'universitas buddhi dharma', 'pending', '2026-06-22 07:49:41');
+(3, 'Narson', 'B 1597 CFF', 'Uang Ali', '2026-06-22', '15:50:00', '2026-06-24', '15:50:00', 'tes', 'ubd', 'disetujui', '2026-06-22 08:44:43'),
+(4, 'Joko', 'B 1432 CKI', 'Mayor', '2026-06-16', '09:00:00', '2026-06-16', '12:00:00', 'tes lagi', 'ubd', 'ditolak', '2026-06-22 09:57:52');
 
 -- --------------------------------------------------------
 
@@ -194,7 +196,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT untuk tabel `data_peminjam`
 --
 ALTER TABLE `data_peminjam`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `kendaraan`
@@ -206,7 +208,7 @@ ALTER TABLE `kendaraan`
 -- AUTO_INCREMENT untuk tabel `riwayat`
 --
 ALTER TABLE `riwayat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `supir`
