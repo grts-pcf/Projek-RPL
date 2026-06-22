@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['admin'])) {
+    header("Location: LOGIN.php");
+    exit();
+}
+require_once "config/koneksi.php";
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -25,38 +35,42 @@
         class="logo-img"
     >
 
-    <h2>UBD Transport</h2>
+    <h2>Transportasi UBD</h2>
 
 </div>
 
         <ul class="menu">
 
             <li>
-                <a href="index.html">Dashboard</a>
+                <a href="index.php">Dashboard</a>
             </li>
 
             <li>
-                <a href="data-peminjam.html">Data Peminjam</a>
+                <a href="data-peminjam.php">Data Peminjam</a>
             </li>
 
             <li>
-                <a href="riwayat.html">Riwayat Peminjaman</a>
+                <a href="riwayat.php">Riwayat Peminjaman</a>
             </li>
 
             <li>
-                <a href="kendaraan.html">Master Kendaraan</a>
+                <a href="kendaraan.php">Master Kendaraan</a>
             </li>
 
             <li>
-                <a href="pengemudi.html">Pengemudi</a>
+                <a href="pengemudi.php">Pengemudi</a>
             </li>
 
             <li>
-                <a href="laporan.html">Laporan</a>
+                <a href="laporan.php">Laporan</a>
             </li>
 
             <li class="active">
-                <a href="pengaturan.html">Pengaturan</a>
+                <a href="pengaturan.php">Pengaturan</a>
+            </li>
+
+            <li class="logout-menu">
+                <a href="proses/logout.php">Logout</a>
             </li>
 
         </ul>

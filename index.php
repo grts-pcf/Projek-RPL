@@ -1,3 +1,26 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['admin'])) {
+    header("Location: LOGIN.php");
+    exit();
+}
+require_once "config/koneksi.php";
+?>
+
+<?php
+$kendaraan = mysqli_query($conn,"
+    SELECT *
+    FROM kendaraan
+    ORDER BY merk_jenis
+");
+
+$supir = mysqli_query($conn,"
+    SELECT *
+    FROM supir
+");
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -25,50 +48,41 @@
         class="logo-img"
     >
 
-    <h2>UBD Transport</h2>
+    <h2>Transportasi UBD</h2>
 
 </div>
 
         <ul class="menu">
             <li class="active">
-                    <a href="index.html">Dashboard</a>
+                    <a href="index.php">Dashboard</a>
                 </li>
-
             
                 <li>
-                    <a href="data-peminjam.html">
-                        Data Peminjam
-                    </a>
+                    <a href="data-peminjam.php">Data Peminjam</a>
                 </li>
 
                 <li>
-                    <a href="riwayat.html">
-                        Riwayat Peminjaman
-                    </a>
+                    <a href="riwayat.php">Riwayat Peminjaman</a>
                 </li>
 
                 <li>
-                    <a href="kendaraan.html">
-                        Master Kendaraan
-                    </a>
+                    <a href="kendaraan.php">Master Kendaraan</a>
                 </li>
 
                 <li>
-                    <a href="pengemudi.html">
-                        Pengemudi
-                    </a>
+                    <a href="pengemudi.php">Pengemudi</a>
                 </li>
 
                 <li>
-                    <a href="laporan.html">
-                        Laporan
-                    </a>
+                    <a href="laporan.php"> Laporan</a>
                 </li>
 
                 <li>
-                    <a href="pengaturan.html">
-                        Pengaturan
-                    </a>
+                    <a href="pengaturan.php">Pengaturan</a>
+                </li>
+
+                <li class="logout-menu">
+                    <a href="proses/logout.php">Logout</a>
                 </li>
 
             </ul>
@@ -119,50 +133,87 @@
 
             <h2>Form Peminjaman Kendaraan</h2>
 
-            <form>
+            <form action="proses/simpan_peminjaman.php" method="POST" enctype="multipart/form-data">
 
                 <div class="input-group">
                     <label>Nama Peminjam</label>
-                    <input type="text" placeholder="Masukkan nama">
+                    <input
+                    type="text"
+                    name="nama_peminjam"
+                    placeholder="Masukkan nama"
+                    required>
                 </div>
 
                 <div class="input-group">
                     <label>Unit / Bagian</label>
-                    <input type="text" placeholder="Masukkan unit">
+                    <input
+                    type="text"
+                    name="unit"
+                    placeholder="Masukkan unit"
+                    required>
                 </div>
 
                 <div class="input-group">
                     <label>No Telepon</label>
-                    <input type="text" placeholder="Masukkan nomor telepon">
+                    <input
+                    type="text"
+                    name="no_telepon"
+                    placeholder="Masukkan nomor telepon"
+                    required>
                 </div>
 
                 <div class="row">
 
                     <div class="input-group">
-                        <label>Tanggal</label>
-                        <input type="date">
+                        <label>Tanggal Peminjaman</label>
+                        <input
+                        type="date"
+                        name="tanggal_pinjam"
+                        required>
                     </div>
 
                     <div class="input-group">
                         <label>Jam Berangkat</label>
-                        <input type="time">
+                        <input
+                        type="time"
+                        name="jam_berangkat"
+                        required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Tanggal Kembali</label>
+                        <input
+                        type="date"
+                        name="tanggal_kembali"
+                        required>
                     </div>
 
                     <div class="input-group">
                         <label>Jam Kembali</label>
-                        <input type="time">
+                        <input
+                        type="time"
+                        name="jam_kembali"
+                        required>
                     </div>
 
                 </div>
 
                 <div class="input-group">
                     <label>Keperluan</label>
-                    <textarea placeholder="Masukkan keperluan"></textarea>
+                    <textarea
+                        name="keperluan"
+                        placeholder="Masukkan keperluan"
+                        required
+                    ></textarea>
                 </div>
 
                 <div class="input-group">
                     <label>Tujuan</label>
-                    <textarea placeholder="Masukkan tujuan"></textarea>
+                    <textarea
+                        name="tujuan"
+                        placeholder="Masukkan tujuan"
+                        required
+                    ></textarea>
                 </div>
 
                 <div class="row">
@@ -173,11 +224,10 @@
 
                         <label>Jenis Kendaraan</label>
 
-                        <select>
-                            <option>Pilih Jenis Kendaraan</option>
-                            <option>Motor</option>
-                            <option>Mobil</option>
-                            <option>Sepeda</option>
+                        <select id="jenisKendaraan" name="jenis" required>
+                            <option value="">Pilih Jenis Kendaraan</option>
+                            <option value="Mobil">Mobil</option>
+                            <option value="Motor">Motor</option>
                         </select>
 
                     </div>
@@ -188,13 +238,19 @@
 
                         <label>Kendaraan</label>
 
-                        <select>
-                            <option>Avanza</option>
-                            <option>Innova</option>
-                            <option>Hiace</option>
-                            <option>Vario</option>
-                            <option>NMAX</option>
-                            <option>Sepeda Lipat</option>
+                        <select id="kendaraanSelect" name="kendaraan" disabled required>
+
+                            <option value="">Pilih Kendaraan</option>
+
+                            <?php while($k = mysqli_fetch_assoc($kendaraan)): ?>
+                                <option
+                                    value="<?= $k['no_polisi']; ?>"
+                                    data-jenis="<?= $k['jenis']; ?>"
+                                >
+                                    <?= $k['merk_jenis']; ?> - <?= $k['no_polisi']; ?>
+                                </option>
+                            <?php endwhile; ?>
+
                         </select>
 
                     </div>
@@ -205,9 +261,19 @@
 
                         <label>Pengemudi</label>
 
-                        <select>
-                            <option>Budi</option>
-                            <option>Andi</option>
+                        <select id="pengemudiSelect" name="pengemudi" disabled required>
+
+                            <option value="">Pilih Pengemudi</option>
+
+                            <?php while($s = mysqli_fetch_assoc($supir)): ?>
+                                <option
+                                    value="<?= $s['nama_supir']; ?>"
+                                    data-polisi="<?= $s['no_polisi']; ?>"
+                                >
+                                    <?= $s['nama_supir']; ?>
+                                </option>
+                            <?php endwhile; ?>
+
                         </select>
 
                     </div>
@@ -303,6 +369,63 @@ signatureInput.addEventListener("change", function(){
         preview.style.display = "block";
 
     }
+
+});
+
+</script>
+
+<script>
+
+const jenisSelect = document.getElementById('jenisKendaraan');
+const kendaraanSelect = document.getElementById('kendaraanSelect');
+const pengemudiSelect = document.getElementById('pengemudiSelect');
+
+/* FILTER JENIS KENDARAAN */
+jenisSelect.addEventListener('change', function(){
+
+    const jenis = this.value;
+
+    kendaraanSelect.selectedIndex = 0;
+    pengemudiSelect.selectedIndex = 0;
+
+    kendaraanSelect.disabled = (jenis === '');
+    pengemudiSelect.disabled = true;
+
+    Array.from(kendaraanSelect.options).forEach((option, index) => {
+
+        if(index === 0) return;
+
+        if(jenis === ''){
+            option.hidden = false;
+        } else {
+            option.hidden = option.dataset.jenis !== jenis;
+        }
+
+    });
+
+});
+
+/* PILIH PENGEMUDI OTOMATIS */
+kendaraanSelect.addEventListener('change', function(){
+
+    const noPolisi = this.value;
+
+    pengemudiSelect.selectedIndex = 0;
+
+    if(noPolisi === ''){
+        pengemudiSelect.disabled = true;
+        return;
+    }
+
+    pengemudiSelect.disabled = false;
+
+    Array.from(pengemudiSelect.options).forEach(option => {
+
+        if(option.dataset.polisi === noPolisi){
+            option.selected = true;
+        }
+
+    });
 
 });
 

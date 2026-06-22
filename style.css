@@ -315,3 +315,33 @@ input[type="file"]{
     gap:10px;
     align-items:center;
 }
+
+.logout-menu{
+    margin-top:30px;
+    background:#ef4444;
+    border-radius:12px;
+}
+
+.logout-menu:hover{
+    background:#dc2626;
+}
+
+.logout-menu a{
+    color:white;
+    text-decoration:none;
+    display:block;
+}
+
+/* Error Message */
+
+.error-message{
+    background:#fee2e2;
+    color:#b91c1c;
+    border:1px solid #fecaca;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:20px;
+    text-align:center;
+    font-size:14px;
+    font-weight:500;
+}

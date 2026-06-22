@@ -1,0 +1,54 @@
+CREATE DATABASE db_peminjaman_kendaraan;
+USE db_peminjaman_kendaraan;
+
+CREATE TABLE kendaraan (
+    id_kendaraan INT AUTO_INCREMENT PRIMARY KEY,
+    merk_jenis VARCHAR(100) NOT NULL,
+    tahun INT NOT NULL,
+    no_polisi VARCHAR(15) NOT NULL UNIQUE,
+    tgl_pajak_stnk VARCHAR(30),
+    jenis ENUM('Mobil','Motor') NOT NULL
+);
+
+INSERT INTO kendaraan
+(merk_jenis, tahun, no_polisi, tgl_pajak_stnk, jenis)
+VALUES
+('DAIHATSU GRANMAX', 2009, 'B 1597 CFF', '19 OKTOBER', 'Mobil'),
+('TOYOTA AVANZA', 2012, 'B 1051 CFY', '12 DESEMBER', 'Mobil'),
+('SUZUKI ERTIGA', 2014, 'B 1432 CKI', '02 APRIL', 'Mobil'),
+('SUZUKI ERTIGA', 2014, 'B 1573 CKI', '07 APRIL', 'Mobil'),
+('TOYOTA VIOS', 2015, 'B 1924 CAA', '18 AGUSTUS', 'Mobil'),
+('TOYOTA HI-ACE', 2017, 'B 7290 CDA', '06 NOVEMBER', 'Mobil'),
+('YAMAHA VEGA-R (PURCHASING)', 2004, 'B 6335 CAX', '29 JULI', 'Motor'),
+('HONDA REVO (TOTO)', 2013, 'B 6157 CXJ', '22 OKTOBER', 'Motor');
+
+CREATE TABLE pengemudi (
+    id_pengemudi INT AUTO_INCREMENT PRIMARY KEY,
+    nama_supir VARCHAR(100) NOT NULL,
+    no_polisi VARCHAR(15),
+    FOREIGN KEY (no_polisi)
+    REFERENCES kendaraan(no_polisi)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
+);
+
+INSERT INTO pengemudi (nama_supir, no_polisi)
+VALUES
+('Uang Ali', 'B 1597 CFF'),
+('Hendrik', 'B 1051 CFY'),
+('Mayor', 'B 1432 CKI'),
+('Tohir', 'B 1573 CKI'),
+('Kurniawan', 'B 1924 CAA'),
+('Opsional', 'B 7290 CDA');
+
+CREATE TABLE peminjaman (
+    id_peminjaman INT AUTO_INCREMENT PRIMARY KEY,
+    nama_peminjam VARCHAR(100),
+    no_polisi VARCHAR(15),
+    tujuan TEXT,
+    tanggal_pinjam DATE,
+    tanggal_kembali DATE,
+    status VARCHAR(30),
+    FOREIGN KEY (no_polisi)
+    REFERENCES kendaraan(no_polisi)
+);

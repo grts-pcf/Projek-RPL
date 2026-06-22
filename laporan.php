@@ -1,3 +1,24 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['admin'])) {
+    header("Location: LOGIN.php");
+    exit();
+}
+require_once "config/koneksi.php";
+
+$queryLaporan = mysqli_query($conn,"
+    SELECT
+        r.*,
+        k.merk_jenis
+    FROM riwayat r
+    LEFT JOIN kendaraan k
+        ON r.kendaraan = k.no_polisi
+    ORDER BY r.id DESC
+");
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -25,38 +46,42 @@
         class="logo-img"
     >
 
-    <h2>UBD Transport</h2>
+    <h2>Transportasi UBD</h2>
 
 </div>
 
         <ul class="menu">
 
             <li>
-                <a href="index.html">Dashboard</a>
+                <a href="index.php">Dashboard</a>
             </li>
 
             <li>
-                <a href="data-peminjam.html">Data Peminjam</a>
+                <a href="data-peminjam.php">Data Peminjam</a>
             </li>
 
             <li>
-                <a href="riwayat.html">Riwayat Peminjaman</a>
+                <a href="riwayat.php">Riwayat Peminjaman</a>
             </li>
 
             <li>
-                <a href="kendaraan.html">Master Kendaraan</a>
+                <a href="kendaraan.php">Master Kendaraan</a>
             </li>
 
             <li>
-                <a href="pengemudi.html">Pengemudi</a>
+                <a href="pengemudi.php">Pengemudi</a>
             </li>
 
             <li class="active">
-                <a href="laporan.html">Laporan</a>
+                <a href="laporan.php">Laporan</a>
             </li>
 
             <li>
-                <a href="pengaturan.html">Pengaturan</a>
+                <a href="pengaturan.php">Pengaturan</a>
+            </li>
+
+            <li class="logout-menu">
+                <a href="proses/logout.php">Logout</a>
             </li>
 
         </ul>
@@ -176,54 +201,57 @@
 
                 <tbody id="dataLaporan">
 
-                    <tr>
-                        <td>1</td>
-                        <td>Jasmine</td>
-                        <td>Avanza</td>
-                        <td>Budi</td>
-                        <td data-date="2026-06-04">04 Juni 2026</td>
-                        <td>Seminar</td>
-                        <td>
-                            <span class="success">
-                                Disetujui
-                            </span>
-                        </td>
-                    </tr>
+                    <?php
+                    $no = 1;
+                    while ($r = mysqli_fetch_assoc($queryLaporan)) :
+                    ?>
 
                     <tr>
-                        <td>2</td>
-                        <td>Kevin</td>
-                        <td>Hiace</td>
-                        <td>Andi</td>
-                        <td data-date="2026-06-05">05 Juni 2026</td>
-                        <td>Kunjungan Industri</td>
-                        <td>
-                            <span class="pending">
-                                Pending
-                            </span>
-                        </td>
-                    </tr>
+                        <td><?= $no++; ?></td>
+                        <td><?= $r['nama_peminjam']; ?></td>
+                        <td><?= $r['merk_jenis']; ?></td>
+                        <td><?= $r['pengemudi']; ?></td>
 
-                    <tr>
-                        <td>3</td>
-                        <td>Michael</td>
-                        <td>Innova</td>
-                        <td>Rian</td>
-                        <td data-date="2026-06-06">06 Juni 2026</td>
-                        <td>Meeting Client</td>
+                        <td>
+                            <?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?> 
+                            -
+                            <?= date('d F Y', strtotime($r['tanggal_kembali'])); ?>
+                        </td>
+
+                        <td><?= $r['tujuan']; ?></td>
+
                         <td>
 
-                            <span style="
-                                background:#fee2e2;
-                                color:#991b1b;
-                                padding:8px 12px;
-                                border-radius:8px;
-                            ">
-                                Ditolak
-                            </span>
+                            <?php if($r['status'] == 'disetujui'): ?>
+
+                                <span class="success">
+                                    Disetujui
+                                </span>
+
+                            <?php elseif($r['status'] == 'pending'): ?>
+
+                                <span class="pending">
+                                    Pending
+                                </span>
+
+                            <?php else: ?>
+
+                                <span style="
+                                    background:#fee2e2;
+                                    color:#991b1b;
+                                    padding:8px 12px;
+                                    border-radius:8px;
+                                ">
+                                    Ditolak
+                                </span>
+
+                            <?php endif; ?>
 
                         </td>
+
                     </tr>
+
+                    <?php endwhile; ?>
 
                 </tbody>
 

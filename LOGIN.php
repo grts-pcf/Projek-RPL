@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (isset($_SESSION['admin'])) {
+    header("Location: index.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -134,39 +143,44 @@
         alt="Logo UBD"
         class="logo-img"
     >
-            <h2>UBD Transport</h2>
+            <h2>Transportasi UBD</h2>
         </div>
 
         <h1>Login Admin</h1>
 
-        <form action="index.html">
-
-            <!-- Username -->
-
-            <div class="input-group">
-
-                <label>Username</label>
-
-                <input 
-                    type="text" 
-                    placeholder="Masukkan username"
-                >
-
+        <?php if(isset($_GET['error'])): ?>
+            <div class="error-message">
+                <strong>⚠ Login gagal!</strong><br>
+                Username atau password yang Anda masukkan salah.
             </div>
+        <?php endif; ?>
 
-            <!-- Password -->
+        <form action="proses/login.php" method="POST">
 
-            <div class="input-group">
+                    <!-- Username -->
+                    <div class="input-group">
+                        <label>Username</label>
 
-                <label>Password</label>
+                        <input
+                            type="text"
+                            name="username"
+                            placeholder="Masukkan username"
+                            required
+                        >
+                    </div>
 
-                <div class="password-box">
+                    <!-- Password -->
+                    <div class="input-group">
+                        <label>Password</label>
 
-                    <input 
-                        type="password"
-                        id="password"
-                        placeholder="Masukkan password"
-                    >
+                        <div class="password-box">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Masukkan password"
+                                required
+                            >
 
                     <!-- Icon Button -->
 
