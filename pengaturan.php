@@ -86,7 +86,7 @@ require_once "config/koneksi.php";
             <h1>Pengaturan Sistem</h1>
 
             <div class="profile">
-                <a href="LOGIN.html">Admin</a>
+                <a href="LOGIN.php">Admin</a>
             </div>
 
         </div>

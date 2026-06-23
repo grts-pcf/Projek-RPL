@@ -138,7 +138,7 @@ $query = mysqli_query($conn, "
 
                 <div class="input-group">
                     <label>Cari Pengemudi</label>
-                   <input type="text" id="searchPengemudi" placeholder="Masukkan nama pengemudi">
+                   <input type="text" id="searchPengemudi" placeholder="Masukkan nama pengemudi atau no polisi">
                 </div>
 
             </div>
@@ -182,6 +182,8 @@ $query = mysqli_query($conn, "
                                 <button
                                     class="btn-1 btnEdit"
                                     data-id="<?= $row['id']; ?>"
+                                    data-nama="<?= htmlspecialchars($row['nama_supir']); ?>"
+                                    data-polisi="<?= htmlspecialchars($row['no_polisi']); ?>"
                                     style="
                                         width:auto;
                                         padding:8px 15px;
@@ -193,6 +195,8 @@ $query = mysqli_query($conn, "
                                 <button
                                     class="btn-1 btnDetail"
                                     data-id="<?= $row['id']; ?>"
+                                    data-nama="<?= htmlspecialchars($row['nama_supir']); ?>"
+                                    data-polisi="<?= htmlspecialchars($row['no_polisi']); ?>"
                                     style="
                                         width:auto;
                                         padding:8px 15px;
@@ -202,21 +206,18 @@ $query = mysqli_query($conn, "
                                     Detail
                                 </button>
 
-                                <a
-                                    href="proses/hapus_supir.php?id=<?= $row['id']; ?>"
-                                    onclick="return confirm('Yakin ingin menghapus pengemudi ini?')"
-                                    class="btn-1"
+                                <button
+                                    class="btn-1 btnHapus"
+                                    data-id="<?= $row['id']; ?>"
+                                    data-nama="<?= htmlspecialchars($row['nama_supir']); ?>"
                                     style="
                                         width:auto;
                                         padding:8px 15px;
                                         font-size:14px;
                                         background:#ef4444;
-                                        color:white;
-                                        text-decoration:none;
-                                        display:inline-block;
                                     ">
                                     Hapus
-                                </a>
+                                </button>
 
                             </div>
 
@@ -236,6 +237,330 @@ $query = mysqli_query($conn, "
 
 </div>
 
-<script src="pengemudi.js"></script>
+<!-- Modal Tambah -->
+<div id="modalTambahPengemudi" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close"  data-modal="tambah">&times;</span>
+
+        <h2>Tambah Pengemudi</h2>
+
+        <form action="proses/tambah_supir.php" method="POST">
+
+            <div class="input-group">
+                <label>Nama Pengemudi</label>
+                <input
+                    type="text"
+                    name="nama_supir"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label>No Polisi</label>
+                <input
+                    type="text"
+                    name="no_polisi"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                name="simpan"
+                class="btn-1"
+            >
+                Simpan
+            </button>
+
+        </form>
+        
+    </div>
+
+</div>
+
+<!-- Modal Edit -->
+<div id="modalEditPengemudi" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="edit">&times;</span>
+
+        <h2>Edit Pengemudi</h2>
+
+        <form action="proses/update_supir.php" method="POST">
+
+            <input
+                type="hidden"
+                id="edit_id"
+                name="id"
+            >
+
+            <div class="input-group">
+                <label>Nama Pengemudi</label>
+                <input
+                    type="text"
+                    id="edit_nama"
+                    name="nama_supir"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label>No Polisi</label>
+                <input
+                    type="text"
+                    id="edit_polisi"
+                    name="no_polisi"
+                    required
+                >
+            </div>
+
+            <button
+                type="submit"
+                class="btn-1"
+            >
+                Simpan Perubahan
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Modal Detail -->
+<div id="modalDetailPengemudi" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="detail">&times;</span>
+
+        <h2>Detail Pengemudi</h2>
+
+        <div class="detail-container">
+
+            <p>
+                <strong>ID :</strong>
+                <span id="detail_id"></span>
+            </p>
+
+            <p>
+                <strong>Nama Pengemudi :</strong>
+                <span id="detail_nama"></span>
+            </p>
+
+            <p>
+                <strong>No Polisi :</strong>
+                <span id="detail_polisi"></span>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal Hapus -->
+<div id="modalHapusPengemudi" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="hapus">&times;</span>
+
+        <h2>Hapus Pengemudi</h2>
+
+        <p>
+            Yakin ingin menghapus pengemudi
+            <strong id="hapus_nama"></strong>?
+        </p>
+
+        <br>
+
+        <div style="
+            display:flex;
+            gap:10px;
+            justify-content:center;
+        ">
+
+            <a
+                id="btnKonfirmasiHapus"
+                href="#"
+                class="btn-1"
+                style="
+                    background:#ef4444;
+                    text-decoration:none;
+                ">
+                Ya, Hapus
+            </a>
+
+            <button
+                type="button"
+                id="btnBatalHapus"
+                class="btn-1"
+                style="
+                    background:#6b7280;
+                ">
+                Batal
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const searchPengemudi =
+document.getElementById('searchPengemudi');
+
+searchPengemudi.addEventListener('keyup', function(){
+
+    const keyword =
+    this.value.toLowerCase();
+
+    const rows =
+    document.querySelectorAll('#dataPengemudi tr');
+
+    rows.forEach(row => {
+
+        const nama =
+        row.cells[1].textContent.toLowerCase();
+
+        const polisi =
+        row.cells[2].textContent.toLowerCase();
+
+        const ditemukan =
+            nama.includes(keyword) ||
+            polisi.includes(keyword);
+
+        row.style.display =
+            ditemukan ? '' : 'none';
+
+    });
+
+});
+
+const modalTambah =
+document.getElementById('modalTambahPengemudi');
+
+document
+.getElementById('btnTambahPengemudi')
+.addEventListener('click', function(){
+
+    modalTambah.style.display =
+    'block';
+
+});
+
+const modalEdit =
+document.getElementById('modalEditPengemudi');
+
+document.querySelectorAll('.btnEdit')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        document.getElementById('edit_id').value =
+            this.dataset.id;
+
+        document.getElementById('edit_nama').value =
+            this.dataset.nama;
+
+        document.getElementById('edit_polisi').value =
+            this.dataset.polisi;
+
+        modalEdit.style.display =
+            'block';
+
+    });
+
+});
+
+const modalDetail =
+document.getElementById('modalDetailPengemudi');
+
+document.querySelectorAll('.btnDetail')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        document.getElementById('detail_id')
+        .textContent = this.dataset.id;
+
+        document.getElementById('detail_nama')
+        .textContent = this.dataset.nama;
+
+        document.getElementById('detail_polisi')
+        .textContent = this.dataset.polisi;
+
+        modalDetail.style.display =
+        'block';
+
+    });
+
+});
+
+const modalHapus =
+document.getElementById('modalHapusPengemudi');
+
+const btnKonfirmasiHapus =
+document.getElementById('btnKonfirmasiHapus');
+
+document.querySelectorAll('.btnHapus')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        document.getElementById('hapus_nama')
+        .textContent = this.dataset.nama;
+
+        btnKonfirmasiHapus.href =
+            'proses/hapus_supir.php?id=' +
+            this.dataset.id;
+
+        modalHapus.style.display =
+            'block';
+
+    });
+
+});
+
+document.getElementById('btnBatalHapus')
+.addEventListener('click', function(){
+
+    modalHapus.style.display =
+        'none';
+
+});
+
+document.querySelectorAll('.close').forEach(btn => {
+
+    btn.addEventListener('click', function () {
+
+        if (this.dataset.modal === 'tambah') {
+            document.getElementById('modalTambahPengemudi')
+            .style.display = 'none';
+        }
+
+        if (this.dataset.modal === 'edit') {
+            modalEdit.style.display = 'none';
+        }
+
+        if (this.dataset.modal === 'detail') {
+            modalDetail.style.display = 'none';
+        }
+
+        if (this.dataset.modal === 'hapus') {
+            modalHapus.style.display = 'none';
+        }
+
+    });
+
+});
+</script>
+
 </body>
 </html>

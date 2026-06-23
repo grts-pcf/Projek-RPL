@@ -97,7 +97,7 @@ $queryLaporan = mysqli_query($conn,"
             <h1>Laporan Peminjaman</h1>
 
             <div class="profile">
-                <a href="LOGIN.html">Admin</a>
+                <a href="LOGIN.php">Admin</a>
             </div>
 
         </div>
@@ -174,10 +174,13 @@ $queryLaporan = mysqli_query($conn,"
 
                 <h2>Data Laporan</h2>
 
-                <button id="btnExportExcel" style="
-                    width:auto;
-                    padding:12px 20px;
-                " class="btn-1">
+                <button
+                    id="btnExportExcel"
+                    style="
+                        width:auto;
+                        padding:12px 20px;"
+                    class="btn-1"
+                >
                     Export Excel
                 </button>
 
@@ -212,12 +215,14 @@ $queryLaporan = mysqli_query($conn,"
                         <td><?= $r['merk_jenis']; ?></td>
                         <td><?= $r['pengemudi']; ?></td>
 
-                        <td>
-                            <?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?> 
+                        <td
+                            data-pinjam="<?= $r['tanggal_pinjam']; ?>"
+                            data-kembali="<?= $r['tanggal_kembali']; ?>"
+                        >
+                            <?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?>
                             -
                             <?= date('d F Y', strtotime($r['tanggal_kembali'])); ?>
                         </td>
-
                         <td><?= $r['tujuan']; ?></td>
 
                         <td>
@@ -263,6 +268,82 @@ $queryLaporan = mysqli_query($conn,"
 
 </div>
 
-<script src="laporan.js"></script>
+<script>
+
+document.getElementById("btnGenerate")
+.addEventListener("click", function(){
+
+    const tglAwal =
+        document.getElementById("tglAwal").value;
+
+    const tglAkhir =
+        document.getElementById("tglAkhir").value;
+
+    const status =
+        document.getElementById("statusFilter")
+        .value
+        .toLowerCase();
+
+    const rows =
+        document.querySelectorAll("#dataLaporan tr");
+
+    rows.forEach(function(row){
+
+        const pinjam =
+            row.cells[4].dataset.pinjam;
+
+        const kembali =
+            row.cells[4].dataset.kembali;
+
+        const statusData =
+            row.cells[6]
+            .textContent
+            .trim()
+            .toLowerCase();
+
+        const cocokStatus =
+            status === "semua" ||
+            statusData.includes(status);
+
+        let cocokTanggal = true;
+
+        if (tglAwal !== '' && tglAkhir !== '') {
+
+            cocokTanggal =
+                (pinjam <= tglAkhir) &&
+                (kembali >= tglAwal);
+
+        }
+
+        row.style.display =
+            (cocokStatus && cocokTanggal)
+            ? ''
+            : 'none';
+
+    });
+
+});
+
+document.getElementById("btnExportExcel")
+.addEventListener("click", function(){
+
+    const tglAwal =
+        document.getElementById("tglAwal").value;
+
+    const tglAkhir =
+        document.getElementById("tglAkhir").value;
+
+    const status =
+        document.getElementById("statusFilter").value;
+
+    window.location.href =
+        "export_excel.php" +
+        "?tglAwal=" + encodeURIComponent(tglAwal) +
+        "&tglAkhir=" + encodeURIComponent(tglAkhir) +
+        "&status=" + encodeURIComponent(status);
+
+});
+
+</script>
 </body>
 </html>

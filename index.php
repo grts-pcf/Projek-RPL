@@ -109,7 +109,7 @@ $supir = mysqli_query($conn,"
             <h1>Sistem Peminjaman Kendaraan</h1>
 
             <div class="profile">
-                <a href="LOGIN.html">Admin</a>
+                <a href="LOGIN.php">Admin</a>
             </div>
             
         </div>

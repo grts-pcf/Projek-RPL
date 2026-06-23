@@ -97,7 +97,7 @@ $queryRiwayat = mysqli_query($conn,"
             <h1>Riwayat Peminjaman</h1>
 
             <div class="profile">
-                <a href="LOGIN.html">Admin</a>
+                <a href="LOGIN.php">Admin</a>
             </div>
 
         </div>
@@ -574,15 +574,18 @@ document.querySelectorAll('.close').forEach(btn => {
     btn.addEventListener('click', function () {
 
         if (this.dataset.modal === 'detail') {
-            modalDetail.style.display = 'none';
+            document.getElementById('modalDetail')
+            .style.display = 'none';
         }
 
         if (this.dataset.modal === 'review') {
-            modalReview.style.display = 'none';
+            document.getElementById('modalReview')
+            .style.display = 'none';
         }
 
         if (this.dataset.modal === 'hapus') {
-            modalHapus.style.display = 'none';
+            document.getElementById('modalHapus')
+            .style.display = 'none';
         }
 
     });

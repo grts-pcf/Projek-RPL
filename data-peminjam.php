@@ -93,7 +93,7 @@ $query = mysqli_query($conn, "
             <h1>Data Peminjam</h1>
 
             <div class="profile">
-                <a href="LOGIN.html">Admin</a>
+                <a href="LOGIN.php">Admin</a>
             </div>
 
         </div>
@@ -243,50 +243,51 @@ $query = mysqli_query($conn, "
 
             </table>
 
-            <div id="modalEdit" class="modal">
+        </div>
 
-            <div class="modal-content">
+    </div>
 
-                <span class="close" data-modal="edit">&times;</span>
+</div>
 
-                <h2>Edit Data Peminjam</h2>
+<!-- Modal Edit Peminjam -->
+<div id="modalEdit" class="modal">
 
-                <form action="proses/update_peminjam.php" method="POST">
+    <div class="modal-content">
 
-                    <input type="hidden" id="edit_id" name="id">
+        <span class="close" data-modal="edit">&times;</span>
 
-                    <div class="form-grid">
+        <h2>Edit Data Peminjam</h2>
 
-                        <div class="form-group">
-                            <label>Nama</label>
-                            <input type="text" id="edit_nama" name="nama_peminjam">
-                        </div>
+        <form action="proses/update_peminjam.php" method="POST">
 
-                        <div class="form-group">
-                            <label>Unit</label>
-                            <input type="text" id="edit_unit" name="unit">
-                        </div>
+             <input type="hidden" id="edit_id" name="id">
 
-                        <div class="form-group">
-                            <label>No Telepon</label>
-                            <input type="text" id="edit_telp" name="no_telepon">
-                        </div>
+            <div class="form-grid">
 
-                    </div>
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" id="edit_nama" name="nama_peminjam">
+                </div>
 
-                    <div class="form-action">
-                        <button type="submit" class="btn-2">
-                            Simpan
-                        </button>
-                    </div>
+                <div class="form-group">
+                    <label>Unit</label>
+                    <input type="text" id="edit_unit" name="unit">
+                </div>
 
-                </form>
+                <div class="form-group">
+                    <label>No Telepon</label>
+                    <input type="text" id="edit_telp" name="no_telepon">
+                </div>
 
             </div>
 
-        </div>
+            <div class="form-action">
+                <button type="submit" class="btn-2">
+                    Simpan
+                </button>
+            </div>
 
-        </div>
+        </form>
 
     </div>
 
@@ -413,12 +414,21 @@ document
 
 });
 
-document.querySelector('.close')
-.addEventListener('click',function(){
+document.querySelectorAll('.close').forEach(btn => {
 
-    modalEdit.style.display='none';
-    modalHapusPeminjam.style.display =
-    'none';
+    btn.addEventListener('click', function () {
+
+        if (this.dataset.modal === 'edit') {
+            document.getElementById('modalEdit')
+            .style.display = 'none';
+        }
+
+        if (this.dataset.modal === 'hapuspeminjam') {
+            document.getElementById('modalHapusPeminjam')
+            .style.display = 'none';
+        }
+
+    });
 
 });
 
