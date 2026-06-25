@@ -85,6 +85,10 @@ $supir = mysqli_query($conn,"
                 </li>
 
                 <li>
+                    <a href="jadwal.php">Jadwal Maintenance</a>
+                </li>
+
+                <li>
                     <a href="laporan.php"> Laporan</a>
                 </li>
 

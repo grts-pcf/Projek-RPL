@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Jun 2026 pada 12.11
--- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.2.12
+-- Generation Time: Jun 25, 2026 at 05:15 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,26 +24,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `admin`
+-- Table structure for table `admin`
 --
 
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `admin`
+-- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id_admin`, `username`, `password`) VALUES
-(1, 'admin', '0192023a7bbd73250516f069df18b500');
+INSERT INTO `admin` (`id_admin`, `username`, `email`, `password`) VALUES
+(1, 'admin', 'narson.nov@gmail.com', '0192023a7bbd73250516f069df18b500');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `data_peminjam`
+-- Table structure for table `data_peminjam`
 --
 
 CREATE TABLE `data_peminjam` (
@@ -56,17 +57,46 @@ CREATE TABLE `data_peminjam` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `data_peminjam`
+-- Dumping data for table `data_peminjam`
 --
 
 INSERT INTO `data_peminjam` (`id`, `nama_peminjam`, `unit`, `no_telepon`, `status`, `created_at`) VALUES
-(3, 'Narson', 'FST', '089876543210', 'aktif', '2026-06-22 08:44:43'),
-(4, 'Joko', 'FSH', '088765432109', 'aktif', '2026-06-22 09:57:52');
+(5, 'Narson', 'FST', '089876543210', 'aktif', '2026-06-22 12:21:40'),
+(6, 'Budi', 'FSH', '087654321098', 'aktif', '2026-06-22 12:28:57'),
+(7, 'ibra', 'fst', '08976542321', 'aktif', '2026-06-23 04:28:47');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `kendaraan`
+-- Table structure for table `jadwal_ganti_oli_kendaraan_operasional`
+--
+
+CREATE TABLE `jadwal_ganti_oli_kendaraan_operasional` (
+  `id` int(11) NOT NULL,
+  `id_kendaraan` int(11) NOT NULL,
+  `no_polisi` varchar(20) NOT NULL,
+  `tanggal_service` date DEFAULT NULL,
+  `tanggal_spk` date DEFAULT NULL,
+  `no_spk` varchar(50) DEFAULT NULL,
+  `tanggal_lpj` date DEFAULT NULL,
+  `no_lpj` varchar(50) DEFAULT NULL,
+  `km_ganti_oli` int(11) NOT NULL,
+  `km_ganti_oli_selanjutnya` int(11) NOT NULL,
+  `keterangan` text DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'Proses'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `jadwal_ganti_oli_kendaraan_operasional`
+--
+
+INSERT INTO `jadwal_ganti_oli_kendaraan_operasional` (`id`, `id_kendaraan`, `no_polisi`, `tanggal_service`, `tanggal_spk`, `no_spk`, `tanggal_lpj`, `no_lpj`, `km_ganti_oli`, `km_ganti_oli_selanjutnya`, `keterangan`, `status`) VALUES
+(1, 4, 'B 1573 CKI', '2026-05-29', '2026-04-30', '041/um-6a/iu/26', '2026-06-04', '027/umum-lpj/ui/2026', 206438, 211438, 'oli stelix Rp 350.000\nfilter oli Rp 30.000\ncarb cleaner Rp 30.000\nfilter udara Rp 130.000\nliak stabil Rp 210.000 2pcs Rp 420.000\nboss sayap Rp 100.000 2pcs Rp 200.000\nrock and Rp 150.000\npress boss lower arm Rp 100.000\nkaret boot rak sht Rp 45.000\ntune up + jasa Rp 300.000\nstiker ubd Rp 200.000\ntotal Rp 1.955.000', 'Maintenance');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kendaraan`
 --
 
 CREATE TABLE `kendaraan` (
@@ -75,27 +105,52 @@ CREATE TABLE `kendaraan` (
   `tahun` int(11) NOT NULL,
   `no_polisi` varchar(15) NOT NULL,
   `tgl_pajak_stnk` varchar(30) DEFAULT NULL,
-  `jenis` enum('Mobil','Motor') NOT NULL
+  `jenis` enum('Mobil','Motor') NOT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'siap'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `kendaraan`
+-- Dumping data for table `kendaraan`
 --
 
-INSERT INTO `kendaraan` (`id_kendaraan`, `merk_jenis`, `tahun`, `no_polisi`, `tgl_pajak_stnk`, `jenis`) VALUES
-(1, 'DAIHATSU GRANMAX', 2009, 'B 1597 CFF', '19 OKTOBER', 'Mobil'),
-(2, 'TOYOTA AVANZA', 2012, 'B 1051 CFY', '12 DESEMBER', 'Mobil'),
-(3, 'SUZUKI ERTIGA', 2014, 'B 1432 CKI', '02 APRIL', 'Mobil'),
-(4, 'SUZUKI ERTIGA', 2014, 'B 1573 CKI', '07 APRIL', 'Mobil'),
-(5, 'TOYOTA VIOS', 2015, 'B 1924 CAA', '18 AGUSTUS', 'Mobil'),
-(6, 'TOYOTA HI-ACE', 2017, 'B 7290 CDA', '06 NOVEMBER', 'Mobil'),
-(7, 'YAMAHA VEGA-R (PURCHASING)', 2004, 'B 6335 CAX', '29 JULI', 'Motor'),
-(8, 'HONDA REVO (TOTO)', 2013, 'B 6157 CXJ', '22 OKTOBER', 'Motor');
+INSERT INTO `kendaraan` (`id_kendaraan`, `merk_jenis`, `tahun`, `no_polisi`, `tgl_pajak_stnk`, `jenis`, `status`) VALUES
+(1, 'DAIHATSU GRANMAX', 2009, 'B 1597 CFF', '19 OKTOBER', 'Mobil', 'siap'),
+(2, 'TOYOTA AVANZA', 2012, 'B 1051 CFY', '12 DESEMBER', 'Mobil', 'siap'),
+(3, 'SUZUKI ERTIGA', 2014, 'B 1432 CKI', '02 APRIL', 'Mobil', 'siap'),
+(4, 'SUZUKI ERTIGA', 2014, 'B 1573 CKI', '07 APRIL', 'Mobil', 'siap'),
+(5, 'TOYOTA VIOS', 2015, 'B 1924 CAA', '18 AGUSTUS', 'Mobil', 'siap'),
+(6, 'TOYOTA HI-ACE', 2017, 'B 7290 CDA', '06 NOVEMBER', 'Mobil', 'siap'),
+(7, 'YAMAHA VEGA-R (PURCHASING)', 2004, 'B 6335 CAX', '29 JULI', 'Motor', 'siap'),
+(8, 'HONDA REVO (TOTO)', 2013, 'B 6157 CXJ', '22 OKTOBER', 'Motor', 'siap');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `riwayat`
+-- Table structure for table `pengisian_bbm`
+--
+
+CREATE TABLE `pengisian_bbm` (
+  `id` int(11) NOT NULL,
+  `id_kendaraan` int(11) NOT NULL,
+  `id_supir` int(11) NOT NULL,
+  `tanggal_pengisian` date NOT NULL,
+  `km_sebelum` int(11) NOT NULL,
+  `km_sesudah` int(11) NOT NULL,
+  `km_terpakai` int(11) NOT NULL,
+  `jumlah_pengisian` decimal(12,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pengisian_bbm`
+--
+
+INSERT INTO `pengisian_bbm` (`id`, `id_kendaraan`, `id_supir`, `tanggal_pengisian`, `km_sebelum`, `km_sesudah`, `km_terpakai`, `jumlah_pengisian`) VALUES
+(3, 5, 5, '2026-05-25', 174960, 175257, 297, 300000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `riwayat`
 --
 
 CREATE TABLE `riwayat` (
@@ -114,17 +169,18 @@ CREATE TABLE `riwayat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `riwayat`
+-- Dumping data for table `riwayat`
 --
 
 INSERT INTO `riwayat` (`id`, `nama_peminjam`, `kendaraan`, `pengemudi`, `tanggal_pinjam`, `jam_berangkat`, `tanggal_kembali`, `jam_kembali`, `keperluan`, `tujuan`, `status`, `created_at`) VALUES
-(3, 'Narson', 'B 1597 CFF', 'Uang Ali', '2026-06-22', '15:50:00', '2026-06-24', '15:50:00', 'tes', 'ubd', 'disetujui', '2026-06-22 08:44:43'),
-(4, 'Joko', 'B 1432 CKI', 'Mayor', '2026-06-16', '09:00:00', '2026-06-16', '12:00:00', 'tes lagi', 'ubd', 'ditolak', '2026-06-22 09:57:52');
+(5, 'Narson', 'B 1573 CKI', 'Tohir', '2026-06-22', '19:24:00', '2026-06-22', '04:21:00', 'tes', 'ubd', 'ditolak', '2026-06-22 12:21:40'),
+(6, 'Budi', 'B 7290 CDA', 'Opsional', '2026-06-25', '19:33:00', '2026-06-27', '01:28:00', 'yolo', 'gbc', 'disetujui', '2026-06-22 12:28:57'),
+(7, 'ibra', 'B 1432 CKI', 'Uang Ali', '2026-06-22', '13:29:00', '2026-06-23', '11:30:00', 'seminar', 'seminar', 'disetujui', '2026-06-23 04:28:47');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `supir`
+-- Table structure for table `supir`
 --
 
 CREATE TABLE `supir` (
@@ -134,7 +190,7 @@ CREATE TABLE `supir` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `supir`
+-- Dumping data for table `supir`
 --
 
 INSERT INTO `supir` (`id`, `nama_supir`, `no_polisi`) VALUES
@@ -150,78 +206,118 @@ INSERT INTO `supir` (`id`, `nama_supir`, `no_polisi`) VALUES
 --
 
 --
--- Indeks untuk tabel `admin`
+-- Indexes for table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id_admin`),
   ADD UNIQUE KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `data_peminjam`
+-- Indexes for table `data_peminjam`
 --
 ALTER TABLE `data_peminjam`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `kendaraan`
+-- Indexes for table `jadwal_ganti_oli_kendaraan_operasional`
+--
+ALTER TABLE `jadwal_ganti_oli_kendaraan_operasional`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_gantioli_kendaraan` (`id_kendaraan`);
+
+--
+-- Indexes for table `kendaraan`
 --
 ALTER TABLE `kendaraan`
   ADD PRIMARY KEY (`id_kendaraan`),
   ADD UNIQUE KEY `no_polisi` (`no_polisi`);
 
 --
--- Indeks untuk tabel `riwayat`
+-- Indexes for table `pengisian_bbm`
+--
+ALTER TABLE `pengisian_bbm`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bbm_mobil` (`id_kendaraan`),
+  ADD KEY `fk_bbm_supir` (`id_supir`);
+
+--
+-- Indexes for table `riwayat`
 --
 ALTER TABLE `riwayat`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indeks untuk tabel `supir`
+-- Indexes for table `supir`
 --
 ALTER TABLE `supir`
   ADD PRIMARY KEY (`id`),
   ADD KEY `no_polisi` (`no_polisi`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `admin`
+-- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `data_peminjam`
+-- AUTO_INCREMENT for table `data_peminjam`
 --
 ALTER TABLE `data_peminjam`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `kendaraan`
+-- AUTO_INCREMENT for table `jadwal_ganti_oli_kendaraan_operasional`
+--
+ALTER TABLE `jadwal_ganti_oli_kendaraan_operasional`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `kendaraan`
 --
 ALTER TABLE `kendaraan`
-  MODIFY `id_kendaraan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_kendaraan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `riwayat`
+-- AUTO_INCREMENT for table `pengisian_bbm`
+--
+ALTER TABLE `pengisian_bbm`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `riwayat`
 --
 ALTER TABLE `riwayat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT untuk tabel `supir`
+-- AUTO_INCREMENT for table `supir`
 --
 ALTER TABLE `supir`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `supir`
+-- Constraints for table `jadwal_ganti_oli_kendaraan_operasional`
+--
+ALTER TABLE `jadwal_ganti_oli_kendaraan_operasional`
+  ADD CONSTRAINT `fk_gantioli_kendaraan` FOREIGN KEY (`id_kendaraan`) REFERENCES `kendaraan` (`id_kendaraan`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `pengisian_bbm`
+--
+ALTER TABLE `pengisian_bbm`
+  ADD CONSTRAINT `fk_bbm_mobil` FOREIGN KEY (`id_kendaraan`) REFERENCES `kendaraan` (`id_kendaraan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_bbm_supir` FOREIGN KEY (`id_supir`) REFERENCES `supir` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `supir`
 --
 ALTER TABLE `supir`
   ADD CONSTRAINT `supir_ibfk_1` FOREIGN KEY (`no_polisi`) REFERENCES `kendaraan` (`no_polisi`) ON DELETE SET NULL ON UPDATE CASCADE;

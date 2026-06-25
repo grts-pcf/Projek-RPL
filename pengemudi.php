@@ -68,6 +68,10 @@ $query = mysqli_query($conn, "
             </li>
 
             <li>
+                <a href="jadwal.php">Jadwal Maintenance</a>
+            </li>
+
+            <li>
                 <a href="laporan.php">Laporan</a>
             </li>
 
@@ -391,6 +395,7 @@ $query = mysqli_query($conn, "
                 style="
                     background:#ef4444;
                     text-decoration:none;
+                    text-align: center;
                 ">
                 Ya, Hapus
             </a>
@@ -401,6 +406,7 @@ $query = mysqli_query($conn, "
                 class="btn-1"
                 style="
                     background:#6b7280;
+                    text-align: center;
                 ">
                 Batal
             </button>

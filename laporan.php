@@ -7,6 +7,7 @@ if (!isset($_SESSION['admin'])) {
 }
 require_once "config/koneksi.php";
 
+// Data riwayat peminjaman
 $queryLaporan = mysqli_query($conn,"
     SELECT
         r.*,
@@ -15,6 +16,27 @@ $queryLaporan = mysqli_query($conn,"
     LEFT JOIN kendaraan k
         ON r.kendaraan = k.no_polisi
     ORDER BY r.id DESC
+");
+
+// Data jadwal ganti oli
+$queryGantiOli = mysqli_query($conn, "
+    SELECT *
+    FROM jadwal_ganti_oli_kendaraan_operasional
+    ORDER BY tanggal_service DESC
+");
+
+// Data pengisian BBM
+$queryBBM = mysqli_query($conn,"
+    SELECT
+        p.*,
+        k.no_polisi,
+        s.nama_supir
+    FROM pengisian_bbm p
+    LEFT JOIN kendaraan k
+        ON p.id_kendaraan = k.id_kendaraan
+    LEFT JOIN supir s
+        ON p.id_supir = s.id
+    ORDER BY p.tanggal_pengisian DESC
 ");
 
 ?>
@@ -70,6 +92,10 @@ $queryLaporan = mysqli_query($conn,"
 
             <li>
                 <a href="pengemudi.php">Pengemudi</a>
+            </li>
+
+            <li>
+                <a href="jadwal.php">Jadwal Maintenance</a>
             </li>
 
             <li class="active">
@@ -264,6 +290,162 @@ $queryLaporan = mysqli_query($conn,"
 
         </div>
 
+        <div class="table-container" style="margin-top:40px;">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+                <h2>Laporan Maintenance</h2>
+
+                <button
+                    id="btnExportMaintenance"
+                    class="btn-1"
+                    style="width:auto;padding:12px 20px;">
+                    Export Excel
+                </button>
+            </div>
+
+            <div class="row" style="margin-bottom:20px;">
+                <div class="input-group">
+                    <label>Tanggal Awal</label>
+                    <input type="date" id="tglOliAwal">
+                </div>
+
+                <div class="input-group">
+                    <label>Tanggal Akhir</label>
+                    <input type="date" id="tglOliAkhir">
+                </div>
+
+                <div class="input-group">
+                    <button type="button"
+                            id="filterOli"
+                            class="btn-1"
+                            style="margin-top:28px;">
+                        Generate
+                    </button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>No Polisi</th>
+                        <th>Tanggal Service</th>
+                        <th>No SPK</th>
+                        <th>KM Ganti Oli</th>
+                        <th>KM Selanjutnya</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+
+                <tbody id="dataGantiOli">
+                    <?php
+                    $no = 1;
+                    while($oli = mysqli_fetch_assoc($queryGantiOli)) :
+                    ?>
+                    <tr>
+                        <td><?= $no++; ?></td>
+                        <td><?= $oli['no_polisi']; ?></td>
+
+                        <td
+                            data-tanggal="<?= $oli['tanggal_service']; ?>">
+                            <?= date('d-m-Y', strtotime($oli['tanggal_service'])); ?>
+                        </td>
+
+                        <td><?= $oli['no_spk']; ?></td>
+                        <td><?= $oli['km_ganti_oli']; ?></td>
+                        <td><?= $oli['km_ganti_oli_selanjutnya']; ?></td>
+                        <td class="keterangan-maintenance" style="max-width:300px; white-space:normal;"><?= nl2br(htmlspecialchars($oli['keterangan'])); ?></td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="table-container" style="margin-top:40px;">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+                <h2>Laporan Pengisian BBM</h2>
+
+                <button
+                    id="btnExportBBM"
+                    class="btn-1"
+                    style="width:auto;padding:12px 20px;">
+                    Export Excel
+                </button>
+            </div>
+
+            <div class="row" style="margin-bottom:20px;">
+                <div class="input-group">
+                    <label>Tanggal Awal</label>
+                    <input type="date" id="tglBBMAwal">
+                </div>
+
+                <div class="input-group">
+                    <label>Tanggal Akhir</label>
+                    <input type="date" id="tglBBMAkhir">
+                </div>
+
+                <div class="input-group">
+                    <button type="button"
+                            id="filterBBM"
+                            class="btn-1"
+                            style="margin-top:28px;">
+                        Generate
+                    </button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>No Polisi</th>
+                        <th>Supir</th>
+                        <th>Tanggal</th>
+                        <th>KM Sebelum</th>
+                        <th>KM Sesudah</th>
+                        <th>KM Terpakai</th>
+                        <th>Jumlah Pengisian</th>
+                    </tr>
+                </thead>
+
+                <tbody id="dataBBM">
+                    <?php
+                    $no = 1;
+                    while($bbm = mysqli_fetch_assoc($queryBBM)) :
+                    ?>
+
+                    <tr>
+                        <td><?= $no++; ?></td>
+                        <td><?= $bbm['no_polisi']; ?></td>
+                        <td><?= $bbm['nama_supir']; ?></td>
+
+                        <td data-tanggal="<?= $bbm['tanggal_pengisian']; ?>">
+                            <?= date('d-m-Y', strtotime($bbm['tanggal_pengisian'])); ?>
+                        </td>
+
+                        <td><?= number_format($bbm['km_sebelum']); ?></td>
+                        <td><?= number_format($bbm['km_sesudah']); ?></td>
+                        <td><?= number_format($bbm['km_terpakai']); ?></td>
+                        <td>Rp <?= number_format($bbm['jumlah_pengisian'],0,',','.'); ?></td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+
+        </div>
+
     </div>
 
 </div>
@@ -341,6 +523,123 @@ document.getElementById("btnExportExcel")
         "?tglAwal=" + encodeURIComponent(tglAwal) +
         "&tglAkhir=" + encodeURIComponent(tglAkhir) +
         "&status=" + encodeURIComponent(status);
+
+});
+
+document.getElementById("filterOli")
+.addEventListener("click", function(){
+
+    const awal =
+        document.getElementById("tglOliAwal").value;
+
+    const akhir =
+        document.getElementById("tglOliAkhir").value;
+
+    const rows =
+        document.querySelectorAll("#dataGantiOli tr");
+
+    rows.forEach(function(row){
+
+        const tanggal =
+            row.cells[2].dataset.tanggal;
+
+        let tampil = true;
+
+        if(awal !== '' && akhir !== ''){
+            tampil =
+                tanggal >= awal &&
+                tanggal <= akhir;
+        }
+
+        row.style.display =
+            tampil ? '' : 'none';
+    });
+});
+
+document.getElementById("filterBBM")
+.addEventListener("click", function(){
+
+    const awal =
+        document.getElementById("tglBBMAwal").value;
+
+    const akhir =
+        document.getElementById("tglBBMAkhir").value;
+
+    const rows =
+        document.querySelectorAll("#dataBBM tr");
+
+    rows.forEach(function(row){
+
+        const tanggal =
+            row.cells[2].dataset.tanggal;
+
+        let tampil = true;
+
+        if(awal !== '' && akhir !== ''){
+            tampil =
+                tanggal >= awal &&
+                tanggal <= akhir;
+        }
+
+        row.style.display =
+            tampil ? '' : 'none';
+    });
+});
+
+function setDateRange(startId, endId) {
+    const start = document.getElementById(startId);
+    const end = document.getElementById(endId);
+
+    start.addEventListener('change', function () {
+        end.min = this.value;
+
+        if (end.value < this.value) {
+            end.value = '';
+        }
+    });
+
+    end.addEventListener('change', function () {
+        start.max = this.value;
+
+        if (start.value > this.value) {
+            start.value = '';
+        }
+    });
+}
+
+setDateRange('tglAwal', 'tglAkhir');
+setDateRange('tglOliAwal', 'tglOliAkhir');
+setDateRange('tglBBMAwal', 'tglBBMAkhir');
+
+document.getElementById("btnExportMaintenance")
+.addEventListener("click", function(){
+
+    const awal =
+        document.getElementById("tglOliAwal").value;
+
+    const akhir =
+        document.getElementById("tglOliAkhir").value;
+
+    window.location.href =
+        "export_maintenance.php" +
+        "?tglAwal=" + encodeURIComponent(awal) +
+        "&tglAkhir=" + encodeURIComponent(akhir);
+
+});
+
+document.getElementById("btnExportBBM")
+.addEventListener("click", function(){
+
+    const awal =
+        document.getElementById("tglBBMAwal").value;
+
+    const akhir =
+        document.getElementById("tglBBMAkhir").value;
+
+    window.location.href =
+        "export_bbm.php" +
+        "?tglAwal=" + encodeURIComponent(awal) +
+        "&tglAkhir=" + encodeURIComponent(akhir);
 
 });
 

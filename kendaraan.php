@@ -11,9 +11,33 @@ require_once "config/koneksi.php";
 <?php
 
 $query = mysqli_query($conn, "
-SELECT *
-FROM kendaraan
-ORDER BY id_kendaraan ASC
+
+SELECT
+    k.*,
+
+    (
+        SELECT j.status
+        FROM jadwal_ganti_oli_kendaraan_operasional j
+        WHERE j.id_kendaraan = k.id_kendaraan
+        AND j.status = 'Maintenance'
+        LIMIT 1
+    ) AS status_maintenance,
+
+    (
+        SELECT COUNT(*)
+        FROM riwayat r
+        WHERE r.kendaraan = k.no_polisi
+        AND r.status = 'disetujui'
+        AND NOW() BETWEEN
+            CONCAT(r.tanggal_pinjam,' ',r.jam_berangkat)
+        AND
+            CONCAT(r.tanggal_kembali,' ',r.jam_kembali)
+    ) AS sedang_dipinjam
+
+FROM kendaraan k
+
+ORDER BY k.id_kendaraan ASC
+
 ");
 
 ?>
@@ -69,6 +93,10 @@ ORDER BY id_kendaraan ASC
 
             <li>
                 <a href="pengemudi.php">Pengemudi</a>
+            </li>
+
+            <li>
+                <a href="jadwal.php">Jadwal Maintenance</a>
             </li>
 
             <li>
@@ -178,6 +206,7 @@ ORDER BY id_kendaraan ASC
                         <th>No Polisi</th>
                         <th>Tanggal Pajak STNK</th>
                         <th>Jenis</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -188,9 +217,26 @@ ORDER BY id_kendaraan ASC
                 $no = 1;
 
                 while($row = mysqli_fetch_assoc($query)):
+
+                    if(!empty($row['status_maintenance']))
+                    {
+                        $statusKendaraan = 'Maintenance';
+                    }
+                    elseif($row['sedang_dipinjam'] > 0)
+                    {
+                        $statusKendaraan = 'Dipinjam';
+                    }
+                    else
+                    {
+                        $statusKendaraan = 'Tersedia';
+                    }
+
                 ?>
 
-                <tr>
+                <tr
+                    data-kendaraan="<?= strtolower($row['merk_jenis'].' '.$row['no_polisi']); ?>"
+                    data-status="<?= strtolower($statusKendaraan); ?>"
+                >
 
                     <td><?= $no++; ?></td>
 
@@ -212,6 +258,30 @@ ORDER BY id_kendaraan ASC
 
                     <td>
 
+                    <?php if($statusKendaraan == 'Maintenance'): ?>
+
+                        <span class="maintenance">
+                            Maintenance
+                        </span>
+
+                    <?php elseif($statusKendaraan == 'Dipinjam'): ?>
+
+                        <span class="pending">
+                            Dipinjam
+                        </span>
+
+                    <?php else: ?>
+
+                        <span class="success">
+                            Tersedia
+                        </span>
+
+                    <?php endif; ?>
+
+                    </td>
+
+                    <td>
+
                         <div class="action-buttons">
 
                             <button
@@ -221,7 +291,12 @@ ORDER BY id_kendaraan ASC
                                     padding:8px 15px;
                                     font-size:14px;
                                 "
-                                data-id="<?= $row['id_kendaraan']; ?>">
+                                data-id="<?= $row['id_kendaraan']; ?>"
+                                data-merk="<?= htmlspecialchars($row['merk_jenis']); ?>"
+                                data-tahun="<?= $row['tahun']; ?>"
+                                data-polisi="<?= htmlspecialchars($row['no_polisi']); ?>"
+                                data-pajak="<?= $row['tgl_pajak_stnk']; ?>"
+                                data-jenis="<?= htmlspecialchars($row['jenis']); ?>">
                                 Edit
                             </button>
 
@@ -233,14 +308,20 @@ ORDER BY id_kendaraan ASC
                                     font-size:14px;
                                     background:#f59e0b;
                                 "
-                                data-id="<?= $row['id_kendaraan']; ?>">
+                                data-id="<?= $row['id_kendaraan']; ?>"
+                                data-merk="<?= htmlspecialchars($row['merk_jenis']); ?>"
+                                data-tahun="<?= $row['tahun']; ?>"
+                                data-polisi="<?= htmlspecialchars($row['no_polisi']); ?>"
+                                data-pajak="<?= $row['tgl_pajak_stnk']; ?>"
+                                data-jenis="<?= htmlspecialchars($row['jenis']); ?>"
+                                data-status="<?= $statusKendaraan; ?>">
                                 Detail
                             </button>
 
-                            <a
-                                href="proses/hapus_kendaraan.php?id=<?= $row['id_kendaraan']; ?>"
-                                onclick="return confirm('Yakin ingin menghapus kendaraan ini?')"
-                                class="btn-1"
+                            <button
+                                class="btn-1 btnHapus"
+                                data-id="<?= $row['id_kendaraan']; ?>"
+                                data-merk="<?= htmlspecialchars($row['merk_jenis']); ?>"
                                 style="
                                     width:auto;
                                     padding:8px 15px;
@@ -251,7 +332,7 @@ ORDER BY id_kendaraan ASC
                                     display:inline-block;
                                 ">
                                 Hapus
-                            </a>
+                            </button>
 
                         </div>
 
@@ -271,6 +352,474 @@ ORDER BY id_kendaraan ASC
 
 </div>
 
-<script src="kendaraan.js"></script>
+<div id="modalTambahKendaraan" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            data-modal="tambah"
+        >&times;</span>
+
+        <h2>Tambah Kendaraan</h2>
+
+        <form
+            action="proses/tambah_kendaraan.php"
+            method="POST">
+
+            <div class="input-group">
+                <label>Merk / Jenis</label>
+                <input
+                    type="text"
+                    name="merk_jenis"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Tahun</label>
+                <input
+                    type="number"
+                    name="tahun"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>No Polisi</label>
+                <input
+                    type="text"
+                    name="no_polisi"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Tanggal Pajak STNK</label>
+                <input
+                    type="date"
+                    name="tgl_pajak_stnk"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Jenis Kendaraan</label>
+
+                <select
+                    name="jenis"
+                    required>
+
+                    <option value="">
+                        Pilih Jenis
+                    </option>
+
+                    <option value="Mobil">
+                        Mobil
+                    </option>
+
+                    <option value="Motor">
+                        Motor
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn-1">
+                Simpan
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div id="modalEditKendaraan" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            data-modal="edit"
+        >&times;</span>
+
+        <h2>Edit Kendaraan</h2>
+
+        <form
+            action="proses/update_kendaraan.php"
+            method="POST">
+
+            <input
+                type="hidden"
+                id="edit_id"
+                name="id_kendaraan">
+
+            <div class="input-group">
+                <label>Merk/Jenis</label>
+                <input
+                    type="text"
+                    id="edit_merk"
+                    name="merk_jenis"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Tahun</label>
+                <input
+                    type="number"
+                    id="edit_tahun"
+                    name="tahun"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>No Polisi</label>
+                <input
+                    type="text"
+                    id="edit_polisi"
+                    name="no_polisi"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Tanggal Pajak STNK</label>
+                <input
+                    type="date"
+                    id="edit_pajak"
+                    name="tanggal_pajak_stnk"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Jenis</label>
+                <input
+                    type="text"
+                    id="edit_jenis"
+                    name="jenis"
+                    required>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-1">
+                Simpan Perubahan
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div id="modalDetailKendaraan" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            data-modal="detail"
+        >&times;</span>
+
+        <h2>Detail Kendaraan</h2>
+
+        <table style="width:100%;">
+
+            <tr>
+                <td><b>Merk/Jenis</b></td>
+                <td id="detail_merk"></td>
+            </tr>
+
+            <tr>
+                <td><b>Tahun</b></td>
+                <td id="detail_tahun"></td>
+            </tr>
+
+            <tr>
+                <td><b>No Polisi</b></td>
+                <td id="detail_polisi"></td>
+            </tr>
+
+            <tr>
+                <td><b>Tanggal Pajak</b></td>
+                <td id="detail_pajak"></td>
+            </tr>
+
+            <tr>
+                <td><b>Jenis</b></td>
+                <td id="detail_jenis"></td>
+            </tr>
+
+            <tr>
+                <td><b>Status</b></td>
+                <td id="detail_status"></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div id="modalHapusKendaraan" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            data-modal="hapus"
+        >&times;</span>
+
+        <h2>Hapus Kendaraan</h2>
+
+        <p>
+            Yakin ingin menghapus kendaraan:
+            <b id="namaKendaraanHapus"></b> ?
+        </p>
+
+        <form
+            action="proses/hapus_kendaraan.php"
+            method="GET">
+
+            <input
+                type="hidden"
+                id="hapus_id"
+                name="id">
+
+            <div
+                style="
+                    display:flex;
+                    gap:10px;
+                    justify-content:center;
+                    margin-top:20px;
+                ">
+
+                <button
+                    type="submit"
+                    class="btn-1"
+                    style=
+                    "background:#ef4444; 
+                    text-align: center;">
+                    Hapus
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-1"
+                    style=
+                    "background:#6b7280; 
+                    text-align: center;"
+                    onclick="
+                        document.getElementById('modalHapusKendaraan')
+                        .style.display='none';
+                    ">
+                    Batal
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+const searchKendaraan =
+document.getElementById('searchKendaraan');
+
+const searchStatus =
+document.getElementById('searchStatus');
+
+function filterKendaraan()
+{
+    const keyword =
+        searchKendaraan.value.toLowerCase();
+
+    const status =
+        searchStatus.value.toLowerCase();
+
+    const rows =
+        document.querySelectorAll('#dataKendaraan tr');
+
+    rows.forEach(row => {
+
+        const kendaraan =
+            row.dataset.kendaraan;
+
+        const statusRow =
+            row.dataset.status;
+
+        let tampil = true;
+
+        // Filter kendaraan
+        if (
+            keyword !== '' &&
+            !kendaraan.includes(keyword)
+        ) {
+            tampil = false;
+        }
+
+        // Filter status
+        if (
+            status !== 'semua' &&
+            statusRow !== status
+        ) {
+            tampil = false;
+        }
+
+        row.style.display =
+            tampil ? '' : 'none';
+
+    });
+}
+
+searchKendaraan.addEventListener(
+    'keyup',
+    filterKendaraan
+);
+
+searchStatus.addEventListener(
+    'change',
+    filterKendaraan
+);
+
+const modalTambah =
+document.getElementById(
+    'modalTambahKendaraan'
+);
+
+document
+.getElementById('btnTambahKendaraan')
+.addEventListener('click', function(){
+
+    modalTambah.style.display =
+    'block';
+
+});
+
+const modalEdit =
+document.getElementById(
+    'modalEditKendaraan'
+);
+
+document.querySelectorAll('.btnEdit')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        document.getElementById('edit_id')
+        .value = this.dataset.id;
+
+        document.getElementById('edit_merk')
+        .value = this.dataset.merk;
+
+        document.getElementById('edit_tahun')
+        .value = this.dataset.tahun;
+
+        document.getElementById('edit_polisi')
+        .value = this.dataset.polisi;
+
+        document.getElementById('edit_pajak')
+        .value = this.dataset.pajak;
+
+        document.getElementById('edit_jenis')
+        .value = this.dataset.jenis;
+
+        modalEdit.style.display =
+        'block';
+
+    });
+
+});
+
+const modalDetail =
+document.getElementById(
+    'modalDetailKendaraan'
+);
+
+document.querySelectorAll('.btnDetail')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        document.getElementById('detail_merk')
+        .textContent = this.dataset.merk;
+
+        document.getElementById('detail_tahun')
+        .textContent = this.dataset.tahun;
+
+        document.getElementById('detail_polisi')
+        .textContent = this.dataset.polisi;
+
+        document.getElementById('detail_pajak')
+        .textContent = this.dataset.pajak;
+
+        document.getElementById('detail_jenis')
+        .textContent = this.dataset.jenis;
+
+        document.getElementById('detail_status')
+        .textContent = this.dataset.status;
+
+        modalDetail.style.display =
+        'block';
+
+    });
+
+});
+
+const modalHapus =
+document.getElementById(
+    'modalHapusKendaraan'
+);
+
+document.querySelectorAll('.btnHapus')
+.forEach(btn => {
+
+    btn.addEventListener('click', function(){
+
+        document.getElementById(
+            'hapus_id'
+        ).value = this.dataset.id;
+
+        document.getElementById(
+            'namaKendaraanHapus'
+        ).textContent =
+        this.dataset.merk;
+
+        modalHapus.style.display =
+        'block';
+
+    });
+
+});
+
+document.querySelectorAll(".close").forEach(btn=>{
+
+    btn.addEventListener("click",function(){
+
+        if(this.dataset.modal === 'tambah'){
+            modalTambah.style.display =
+            'none';
+        }
+        
+        if(this.dataset.modal === 'edit'){
+            modalEdit.style.display =
+            'none';
+        }
+
+        if(this.dataset.modal === 'detail'){
+            modalDetail.style.display =
+            'none';
+        }
+
+        if(this.dataset.modal === 'hapus'){
+            modalHapus.style.display =
+            'none';
+        }
+        
+    });
+});
+
+</script>
 </body>
 </html>
