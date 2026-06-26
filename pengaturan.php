@@ -1,0 +1,457 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['admin'])) {
+    header("Location: LOGIN.php");
+    exit();
+}
+require_once "config/koneksi.php";
+
+$queryAdmin = mysqli_query($conn, "
+    SELECT *
+    FROM admin
+    ORDER BY id_admin ASC
+");
+
+?>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="logo">
+
+    <img 
+        src="logo ubd.png" 
+        alt="Logo UBD"
+        class="logo-img"
+    >
+
+    <h2>Transportasi UBD</h2>
+
+</div>
+
+        <ul class="menu">
+
+            <li>
+                <a href="index.php">Dashboard</a>
+            </li>
+
+            <li>
+                <a href="data-peminjam.php">Data Peminjam</a>
+            </li>
+
+            <li>
+                <a href="riwayat.php">Riwayat Peminjaman</a>
+            </li>
+
+            <li>
+                <a href="kendaraan.php">Master Kendaraan</a>
+            </li>
+
+            <li>
+                <a href="pengemudi.php">Pengemudi</a>
+            </li>
+
+            <li>
+                <a href="jadwal.php">Jadwal Maintenance</a>
+            </li>
+
+            <li>
+                <a href="laporan.php">Laporan</a>
+            </li>
+
+            <li class="active">
+                <a href="pengaturan.php">Pengaturan</a>
+            </li>
+
+            <li class="logout-menu">
+                <a href="proses/logout.php">Logout</a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Navbar -->
+        <div class="navbar">
+
+            <h1>Pengaturan</h1>
+
+            <div class="profile">
+                <a href="LOGIN.php">Admin</a>
+            </div>
+
+        </div>
+
+        <!-- Daftar Akun -->
+        <div class="table-container">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+            ">
+                <h2>Daftar Akun</h2>
+
+                <button
+                    class="btn-1"
+                    onclick="openTambahAkun()"
+                    style="width:auto;padding:12px 20px;">
+                    + Tambah Akun
+                </button>
+            </div>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Username</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <?php
+                    $no = 1;
+
+                    while($admin = mysqli_fetch_assoc($queryAdmin)):
+                    ?>
+
+                    <tr>
+
+                        <td><?= $no++; ?></td>
+
+                        <td>
+                            <?= htmlspecialchars($admin['username']); ?>
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="btn-1"
+                                style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    margin-right:5px;
+                                "onclick="openPasswordModal(
+                                    <?= $admin['id_admin']; ?>,
+                                    '<?= htmlspecialchars($admin['username']); ?>'
+                                )">
+                                Ganti Password
+                            </button>
+
+                            <button
+                                style="
+                                    width:auto;
+                                    padding:8px 15px;
+                                    background:#ef4444;
+                                "
+                                class="btn-1">
+                                Hapus
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                    <?php endwhile; ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- Pengaturan Tampilan -->
+        <div class="table-container">
+
+            <h2>Pengaturan Tampilan</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Fitur</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Dark Mode</td>
+                        <td>
+                            <span class="pending">
+                                Nonaktif
+                            </span>
+                        </td>
+                        <td>
+
+                            <button style="
+                                width:auto;
+                                padding:8px 15px;
+                                font-size:14px;
+                            " class="btn-1">
+                                Aktifkan
+                            </button>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Notifikasi Email</td>
+                        <td>
+                            <span class="success">
+                                Aktif
+                            </span>
+                        </td>
+                        <td>
+
+                            <button style="
+                                width:auto;
+                                padding:8px 15px;
+                                font-size:14px;
+                                background:#ef4444;
+                            " class="btn-1">
+                                Nonaktifkan
+                            </button>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Backup Database</td>
+                        <td>
+                            <span class="success">
+                                Aktif
+                            </span>
+                        </td>
+                        <td>
+
+                            <button style="
+                                width:auto;
+                                padding:8px 15px;
+                                font-size:14px;
+                                background:#10b981;
+                            " class="btn-1">
+                                Backup Sekarang
+                            </button>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="modalTambahAkun" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close"
+              onclick="closeTambahAkun()">
+            &times;
+        </span>
+
+        <h2>Tambah Akun Baru</h2>
+
+        <form
+            action="proses/tambah_admin.php"
+            method="POST">
+
+            <div class="input-group">
+                <label>Username</label>
+                <input
+                    type="text"
+                    name="username"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    required>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-1">
+                Simpan
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div id="modalPassword" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            onclick="closePasswordModal()">
+            &times;
+        </span>
+
+        <h2>Ganti Password</h2>
+
+        <form
+            action="proses/ganti_password.php"
+            method="POST">
+
+            <input
+                type="hidden"
+                id="id_admin"
+                name="id_admin">
+
+            <div class="input-group">
+                <label>Username</label>
+                <input
+                    type="text"
+                    id="username_admin"
+                    readonly>
+            </div>
+
+            <div class="input-group">
+                <label>Password Baru</label>
+                <input
+                    type="password"
+                    name="password_baru"
+                    required>
+            </div>
+
+            <div class="input-group">
+                <label>Konfirmasi Password</label>
+                <input
+                    type="password"
+                    name="konfirmasi_password"
+                    required>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-1">
+                Simpan
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+function openTambahAkun() {
+    document.getElementById(
+        'modalTambahAkun'
+    ).style.display = 'block';
+}
+
+function closeTambahAkun() {
+    document.getElementById(
+        'modalTambahAkun'
+    ).style.display = 'none';
+}
+
+window.onclick = function(event){
+    const modal =
+        document.getElementById(
+            'modalTambahAkun'
+        );
+
+    if(event.target == modal){
+        modal.style.display = 'none';
+    }
+
+    const modalPassword =
+        document.getElementById(
+            'modalPassword'
+        );
+
+    if(event.target == modalPassword){
+        modalPassword.style.display = 'none';
+    }
+
+}
+
+function openPasswordModal(
+    id,
+    username
+){
+
+    document.getElementById(
+        'id_admin'
+    ).value = id;
+
+    document.getElementById(
+        'username_admin'
+    ).value = username;
+
+    document.getElementById(
+        'modalPassword'
+    ).style.display = 'block';
+}
+
+function closePasswordModal(){
+
+    document.getElementById(
+        'modalPassword'
+    ).style.display = 'none';
+}
+
+</script>
+
+<?php if(isset($_GET['success'])) : ?>
+<script>
+alert(
+    'Password berhasil diubah.'
+);
+</script>
+<?php endif; ?>
+
+<?php if(isset($_GET['error'])) : ?>
+<script>
+alert(
+    'Konfirmasi password tidak sama.'
+);
+</script>
+<?php endif; ?>
+
+</body>
+</html>
