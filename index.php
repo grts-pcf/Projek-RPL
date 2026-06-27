@@ -259,6 +259,7 @@ ORDER BY s.nama_supir ASC
                         <label>Tanggal Peminjaman</label>
                         <input
                         type="date"
+                        id="tanggal_pinjam"
                         name="tanggal_pinjam"
                         required>
                     </div>
@@ -267,6 +268,7 @@ ORDER BY s.nama_supir ASC
                         <label>Jam Berangkat</label>
                         <input
                         type="time"
+                        id="jam_berangkat"
                         name="jam_berangkat"
                         required>
                     </div>
@@ -275,6 +277,7 @@ ORDER BY s.nama_supir ASC
                         <label>Tanggal Kembali</label>
                         <input
                         type="date"
+                        id="tanggal_kembali"
                         name="tanggal_kembali"
                         required>
                     </div>
@@ -283,6 +286,7 @@ ORDER BY s.nama_supir ASC
                         <label>Jam Kembali</label>
                         <input
                         type="time"
+                        id="jam_kembali"
                         name="jam_kembali"
                         required>
                     </div>
@@ -552,21 +556,113 @@ kendaraanSelect.addEventListener('change', function(){
     pengemudiSelect.selectedIndex = 0;
 
     if(noPolisi === ''){
+        pengemudiSelect.selectedIndex = 0;
         pengemudiSelect.disabled = true;
         return;
     }
 
-    pengemudiSelect.disabled = false;
+    let ditemukan = false;
 
     Array.from(pengemudiSelect.options).forEach(option => {
 
-        if(option.dataset.polisi === noPolisi){
+        if(
+            option.dataset.polisi === noPolisi &&
+            !option.disabled
+        ){
             option.selected = true;
+            ditemukan = true;
         }
-
     });
 
+    pengemudiSelect.disabled = !ditemukan;
 });
+
+const tanggalPinjam = document.getElementById('tanggal_pinjam');
+const jamBerangkat = document.getElementById('jam_berangkat');
+const tanggalKembali = document.getElementById('tanggal_kembali');
+const jamKembali = document.getElementById('jam_kembali');
+
+function cekKendaraan()
+{
+    if(
+        !tanggalPinjam.value ||
+        !jamBerangkat.value ||
+        !tanggalKembali.value ||
+        !jamKembali.value
+    ){
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('tanggal_pinjam', tanggalPinjam.value);
+    formData.append('jam_berangkat', jamBerangkat.value);
+    formData.append('tanggal_kembali', tanggalKembali.value);
+    formData.append('jam_kembali', jamKembali.value);
+
+    fetch('proses/cek_kendaraan.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(response => {
+
+        kendaraanSelect.innerHTML =
+            '<option value="">Pilih Kendaraan</option>';
+
+        response.kendaraan.forEach(k => {
+
+            let option = document.createElement('option');
+
+            option.value = k.no_polisi;
+            option.dataset.jenis = k.jenis;
+
+            let text =
+                k.merk_jenis + ' - ' + k.no_polisi;
+
+            if(k.status_kendaraan !== 'Tersedia')
+            {
+                text += ' (' + k.status_kendaraan + ')';
+                option.disabled = true;
+            }
+
+            option.textContent = text;
+
+            kendaraanSelect.appendChild(option);
+        });
+
+        pengemudiSelect.innerHTML =
+            '<option value="">Pilih Pengemudi</option>';
+
+        response.pengemudi.forEach(s => {
+
+            let option = document.createElement('option');
+
+            option.value = s.nama_supir;
+            option.dataset.polisi = s.no_polisi;
+
+            let text = s.nama_supir;
+
+            if(s.status_supir !== 'Tersedia')
+            {
+                text += ' (' + s.status_supir + ')';
+                option.disabled = true;
+            }
+
+            option.textContent = text;
+
+            pengemudiSelect.appendChild(option);
+        });
+
+        jenisSelect.dispatchEvent(new Event('change'));
+        kendaraanSelect.dispatchEvent(new Event('change'));
+    });
+}
+
+tanggalPinjam.addEventListener('change', cekKendaraan);
+jamBerangkat.addEventListener('change', cekKendaraan);
+tanggalKembali.addEventListener('change', cekKendaraan);
+jamKembali.addEventListener('change', cekKendaraan);
 
 </script>
 
