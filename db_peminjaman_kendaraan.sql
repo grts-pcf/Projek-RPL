@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 25 Jun 2026 pada 19.04
+-- Waktu pembuatan: 26 Jun 2026 pada 04.07
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -30,16 +30,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `admin` (
   `id_admin` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `role` varchar(20) NOT NULL DEFAULT 'admin'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `admin`
 --
 
-INSERT INTO `admin` (`id_admin`, `username`, `password`) VALUES
-(2, 'admin', '$2y$10$HIwnPW8wjSA7LFRJd3Fb4ed1lusBFff/HgF3if12K8C0AQiziIOxm'),
-(3, 'goz', '$2y$10$HatuNIwv4k4jrehaSP53W.hnekDCyMW5.sQ2WMZGrBH3tslsh719C');
+INSERT INTO `admin` (`id_admin`, `username`, `password`, `role`) VALUES
+(2, 'Super Admin', '$2y$10$te7ahDg4FLtRdXA9RrMGzeXmFQr6KikPjiPt8L/0LPRGB3XtHuzgi', 'superadmin'),
+(3, 'admin', '$2y$10$kWpdxeI9UupO/IYadq9fK.HvcA.2KS3iSfYOPTlJ3Fw.E8XwWDabG', 'admin');
 
 -- --------------------------------------------------------
 

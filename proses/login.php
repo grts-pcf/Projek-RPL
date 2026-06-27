@@ -29,6 +29,12 @@ if(mysqli_num_rows($query) == 1){
 
         $_SESSION['id_admin'] =
             $data['id_admin'];
+        
+        $_SESSION['admin'] = 
+            $data['username'];
+
+        $_SESSION['role']  = 
+            $data['role'];
 
         header("Location: ../index.php");
         exit();

@@ -199,11 +199,11 @@ $query = mysqli_query($conn, "
 
                         <td>
                             <?php if ($status == 'aktif') : ?>
-                                <span class="success">
+                                <span class="badge success">
                                     Aktif
                                 </span>
                             <?php else : ?>
-                                <span class="pending">
+                                <span class="badge maintenance">
                                     Nonaktif
                                 </span>
                             <?php endif; ?>

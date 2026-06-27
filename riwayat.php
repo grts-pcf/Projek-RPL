@@ -231,24 +231,19 @@ $queryRiwayat = mysqli_query($conn,"
 
                             <?php if($r['status'] == 'disetujui'): ?>
 
-                                <span class="success">
+                                <span class="badge success">
                                     Disetujui
                                 </span>
 
                             <?php elseif($r['status'] == 'pending'): ?>
 
-                                <span class="pending">
+                                <span class="badge pending">
                                     Pending
                                 </span>
 
                             <?php else: ?>
 
-                                <span style="
-                                    background:#fee2e2;
-                                    color:#991b1b;
-                                    padding:8px 12px;
-                                    border-radius:8px;
-                                ">
+                                <span class="badge maintenance">
                                     Ditolak
                                 </span>
 

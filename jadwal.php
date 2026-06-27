@@ -318,11 +318,11 @@ ORDER BY p.tanggal_pengisian DESC
                     $class = "pending";
 
                     if($status=="Selesai"){
-                        $class = "success";
+                        $class = "badge success";
                     }
 
                     if($status=="Maintenance"){
-                        $class = "maintenance";
+                        $class = "badge maintenance";
                     }
                     ?>
 

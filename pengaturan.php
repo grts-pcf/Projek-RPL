@@ -113,12 +113,15 @@ $queryAdmin = mysqli_query($conn, "
             ">
                 <h2>Daftar Akun</h2>
 
+                <?php if($_SESSION['role'] == 'superadmin'): ?>
                 <button
                     class="btn-1"
                     onclick="openTambahAkun()"
                     style="width:auto;padding:12px 20px;">
                     + Tambah Akun
                 </button>
+                <?php endif; ?>
+
             </div>
 
             <table>
@@ -127,6 +130,7 @@ $queryAdmin = mysqli_query($conn, "
                     <tr>
                         <th>No</th>
                         <th>Username</th>
+                        <th>Role</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -148,7 +152,16 @@ $queryAdmin = mysqli_query($conn, "
                         </td>
 
                         <td>
+                            <?php if($admin['role'] == 'superadmin'): ?>
+                                <span class="badge maintenance">Super Admin</span>
+                            <?php else: ?>
+                                <span class="badge success">Admin</span>
+                            <?php endif; ?>
+                        </td>
 
+                        <td>
+
+                            <?php if($_SESSION['role'] == 'superadmin'): ?>
                             <button
                                 class="btn-1"
                                 style="
@@ -161,16 +174,39 @@ $queryAdmin = mysqli_query($conn, "
                                 )">
                                 Ganti Password
                             </button>
+                            <?php endif; ?>
 
-                            <button
-                                style="
-                                    width:auto;
-                                    padding:8px 15px;
-                                    background:#ef4444;
-                                "
-                                class="btn-1">
-                                Hapus
-                            </button>
+                            <?php if($_SESSION['role'] == 'superadmin'): ?>
+
+                                <?php if($admin['username'] != $_SESSION['admin']): ?>
+
+                                    <button
+                                        style="
+                                            width:auto;
+                                            padding:8px 15px;
+                                            background:#ef4444;
+                                        "
+                                        class="btn-1">
+                                        Hapus
+                                    </button>
+
+                                <?php else: ?>
+
+                                    <button
+                                        style="
+                                            width:auto;
+                                            padding:8px 15px;
+                                            background:#9ca3af;
+                                            cursor:not-allowed;
+                                        "
+                                        class="btn-1"
+                                        disabled>
+                                        Hapus
+                                    </button>
+
+                                <?php endif; ?>
+
+                            <?php endif; ?>
 
                         </td>
 
@@ -206,7 +242,7 @@ $queryAdmin = mysqli_query($conn, "
                     <tr>
                         <td>Dark Mode</td>
                         <td>
-                            <span class="pending">
+                            <span class="badge pending">
                                 Nonaktif
                             </span>
                         </td>
@@ -226,7 +262,7 @@ $queryAdmin = mysqli_query($conn, "
                     <tr>
                         <td>Notifikasi Email</td>
                         <td>
-                            <span class="success">
+                            <span class="badge success">
                                 Aktif
                             </span>
                         </td>
@@ -247,7 +283,7 @@ $queryAdmin = mysqli_query($conn, "
                     <tr>
                         <td>Backup Database</td>
                         <td>
-                            <span class="success">
+                            <span class="badge success">
                                 Aktif
                             </span>
                         </td>
@@ -304,6 +340,15 @@ $queryAdmin = mysqli_query($conn, "
                     type="password"
                     name="password"
                     required>
+            </div>
+
+            <div class="input-group">
+                <label>Role</label>
+
+                <select name="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="superadmin">Super Admin</option>
+                </select>
             </div>
 
             <button
