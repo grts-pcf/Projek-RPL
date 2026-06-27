@@ -86,6 +86,33 @@ ON p.id_kendaraan = k.id_kendaraan
 ORDER BY p.tanggal_pengisian DESC
 ");
 
+$qMaintenance = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM jadwal_ganti_oli_kendaraan_operasional
+WHERE status='Maintenance'
+");
+$maintenance = mysqli_fetch_assoc($qMaintenance);
+
+$qHariIni = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM jadwal_ganti_oli_kendaraan_operasional
+WHERE tanggal_service = CURDATE()
+");
+$hariIni = mysqli_fetch_assoc($qHariIni);
+
+$qSelesai = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM jadwal_ganti_oli_kendaraan_operasional
+WHERE status='Selesai'
+");
+$selesai = mysqli_fetch_assoc($qSelesai);
+
+$qBBM = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM pengisian_bbm
+");
+$totalBBM = mysqli_fetch_assoc($qBBM);
+
 ?>
 
 <!DOCTYPE html>
@@ -165,22 +192,22 @@ ORDER BY p.tanggal_pengisian DESC
 
             <div class="card">
                 <h3>Sedang Maintenance</h3>
-                <p>6</p>
+                <p><?= $maintenance['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Jadwal Hari Ini</h3>
-                <p>3</p>
+                <p><?= $hariIni['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Maintenance Selesai</h3>
-                <p>12</p>
+                <p><?= $selesai['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Pengisian BBM</h3>
-                <p>48</p>
+                <p><?= $totalBBM['total']; ?></p>
             </div>
 
         </div>

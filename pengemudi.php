@@ -7,6 +7,12 @@ if (!isset($_SESSION['admin'])) {
 }
 require_once "config/koneksi.php";
 
+$qTotalSupir = mysqli_query($conn, "
+SELECT COUNT(*) AS total
+FROM supir
+");
+$totalSupir = mysqli_fetch_assoc($qTotalSupir);
+
 $query = mysqli_query($conn, "
     SELECT *
     FROM supir

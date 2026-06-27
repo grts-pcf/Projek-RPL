@@ -7,7 +7,32 @@ if (!isset($_SESSION['admin'])) {
 }
 require_once "config/koneksi.php";
 
-// Data riwayat peminjaman
+$qTotalPeminjaman = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM riwayat
+");
+$totalPeminjaman = mysqli_fetch_assoc($qTotalPeminjaman);
+
+$qKendaraanAktif = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM kendaraan
+");
+$kendaraanAktif = mysqli_fetch_assoc($qKendaraanAktif);
+
+$qTotalPengemudi = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM supir
+");
+$totalPengemudi = mysqli_fetch_assoc($qTotalPengemudi);
+
+$qLaporanBulan = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM riwayat
+WHERE MONTH(tanggal_pinjam)=MONTH(CURDATE())
+AND YEAR(tanggal_pinjam)=YEAR(CURDATE())
+");
+$laporanBulan = mysqli_fetch_assoc($qLaporanBulan);
+
 $queryLaporan = mysqli_query($conn,"
     SELECT
         r.*,
@@ -133,24 +158,24 @@ $queryBBM = mysqli_query($conn,"
 
             <div class="card">
                 <h3>Total Peminjaman</h3>
-                <p>120</p>
+                <p><?= $totalPeminjaman['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Kendaraan Aktif</h3>
-                <p>18</p>
+                <p><?= $kendaraanAktif['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Total Pengemudi</h3>
-                <p>10</p>
+                <p><?= $totalPengemudi['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Laporan Bulan Ini</h3>
-                <p>35</p>
+                <p><?= $laporanBulan['total']; ?></p>
             </div>
-
+            
         </div>
 
         <!-- Filter -->

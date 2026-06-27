@@ -6,6 +6,54 @@ if (!isset($_SESSION['admin'])) {
     exit();
 }
 require_once "config/koneksi.php";
+
+$qTotalKendaraan = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM kendaraan
+");
+$totalKendaraan = mysqli_fetch_assoc($qTotalKendaraan);
+
+$qMaintenance = mysqli_query($conn,"
+SELECT COUNT(DISTINCT id_kendaraan) AS total
+FROM jadwal_ganti_oli_kendaraan_operasional
+WHERE status='Maintenance'
+");
+$maintenance = mysqli_fetch_assoc($qMaintenance);
+
+$qDipinjam = mysqli_query($conn,"
+SELECT COUNT(DISTINCT kendaraan) AS total
+FROM riwayat
+WHERE status='disetujui'
+AND NOW() BETWEEN
+    CONCAT(tanggal_pinjam,' ',jam_berangkat)
+AND
+    CONCAT(tanggal_kembali,' ',jam_kembali)
+");
+$dipinjam = mysqli_fetch_assoc($qDipinjam);
+
+$qTersedia = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM kendaraan k
+WHERE
+NOT EXISTS (
+    SELECT 1
+    FROM riwayat r
+    WHERE r.kendaraan = k.no_polisi
+      AND r.status='disetujui'
+      AND NOW() BETWEEN
+            CONCAT(r.tanggal_pinjam,' ',r.jam_berangkat)
+        AND CONCAT(r.tanggal_kembali,' ',r.jam_kembali)
+)
+AND
+NOT EXISTS (
+    SELECT 1
+    FROM jadwal_ganti_oli_kendaraan_operasional j
+    WHERE j.id_kendaraan = k.id_kendaraan
+      AND j.status='Maintenance'
+)
+");
+$totalTersedia = mysqli_fetch_assoc($qTersedia);
+
 ?>
 
 <?php
@@ -134,22 +182,22 @@ ORDER BY k.id_kendaraan ASC
 
             <div class="card">
                 <h3>Total Kendaraan</h3>
-                <p>8</p>
+                <p><?= $totalKendaraan['total']; ?></p>
             </div>
-
+            
             <div class="card">
                 <h3>Tersedia</h3>
-                <p>1</p>
+                <p><?= $totalTersedia['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Dipinjam</h3>
-                <p>6</p>
+                <p><?= $dipinjam['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Maintenance</h3>
-                <p>1</p>
+                <p><?= $maintenance['total']; ?></p>
             </div>
 
         </div>

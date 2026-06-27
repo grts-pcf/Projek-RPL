@@ -7,6 +7,37 @@ if (!isset($_SESSION['admin'])) {
 }
 require_once "config/koneksi.php";
 
+// Total Peminjaman
+$qTotal = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM riwayat
+");
+$total = mysqli_fetch_assoc($qTotal);
+
+// Disetujui
+$qDisetujui = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM riwayat
+WHERE status='disetujui'
+");
+$disetujui = mysqli_fetch_assoc($qDisetujui);
+
+// Pending
+$qPending = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM riwayat
+WHERE status='pending'
+");
+$pending = mysqli_fetch_assoc($qPending);
+
+// Ditolak
+$qDitolak = mysqli_query($conn,"
+SELECT COUNT(*) AS total
+FROM riwayat
+WHERE status='ditolak'
+");
+$ditolak = mysqli_fetch_assoc($qDitolak);
+
 $queryRiwayat = mysqli_query($conn,"
     SELECT
         r.*,
@@ -111,22 +142,22 @@ $queryRiwayat = mysqli_query($conn,"
 
             <div class="card">
                 <h3>Total Peminjaman</h3>
-                <p>120</p>
+                <p><?= $total['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Disetujui</h3>
-                <p>95</p>
+                <p><?= $disetujui['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Pending</h3>
-                <p>15</p>
+                <p><?= $pending['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Ditolak</h3>
-                <p>10</p>
+                <p><?= $ditolak['total']; ?></p>
             </div>
 
         </div>

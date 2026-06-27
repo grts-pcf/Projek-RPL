@@ -6,6 +6,45 @@ if (!isset($_SESSION['admin'])) {
     exit();
 }
 require_once "config/koneksi.php";
+$qTotalKendaraan = mysqli_query($conn, "SELECT COUNT(*) AS total FROM kendaraan");
+$totalKendaraan = mysqli_fetch_assoc($qTotalKendaraan);
+
+
+$qTotalSupir = mysqli_query($conn, "SELECT COUNT(*) AS total FROM supir");
+$totalSupir = mysqli_fetch_assoc($qTotalSupir);
+
+
+$qHariIni = mysqli_query($conn,"
+    SELECT COUNT(*) AS total
+    FROM riwayat
+    WHERE tanggal_pinjam = CURDATE()
+");
+$hariIni = mysqli_fetch_assoc($qHariIni);
+
+$qTersedia = mysqli_query($conn, "
+SELECT COUNT(*) AS total
+FROM kendaraan k
+WHERE
+NOT EXISTS (
+    SELECT 1
+    FROM riwayat r
+    WHERE r.kendaraan = k.no_polisi
+      AND r.status = 'disetujui'
+      AND NOW() BETWEEN
+          CONCAT(r.tanggal_pinjam,' ',r.jam_berangkat)
+      AND
+          CONCAT(r.tanggal_kembali,' ',r.jam_kembali)
+)
+AND
+NOT EXISTS (
+    SELECT 1
+    FROM jadwal_ganti_oli_kendaraan_operasional j
+    WHERE j.id_kendaraan = k.id_kendaraan
+      AND j.status = 'Maintenance'
+);
+");
+
+$totalTersedia = mysqli_fetch_assoc($qTersedia);
 
 $queryRiwayat = mysqli_query($conn,"
     SELECT
@@ -123,22 +162,23 @@ $supir = mysqli_query($conn,"
 
             <div class="card">
                 <h3>Total Kendaraan</h3>
-                <p>25</p>
+                <p><?= $totalKendaraan['total']; ?></p>
+                
             </div>
 
             <div class="card">
                 <h3>Total Pengemudi</h3>
-                <p>10</p>
+                <p><?= $totalSupir['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Peminjaman Hari Ini</h3>
-                <p>7</p>
+                <p><?= $hariIni['total']; ?></p>
             </div>
 
             <div class="card">
                 <h3>Kendaraan Tersedia</h3>
-                <p>18</p>
+                <p><?= $totalTersedia['total']; ?></p>
             </div>
 
         </div>
