@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Jun 2026 pada 11.52
+-- Waktu pembuatan: 27 Jun 2026 pada 14.52
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -64,7 +64,8 @@ CREATE TABLE `data_peminjam` (
 INSERT INTO `data_peminjam` (`id`, `nama_peminjam`, `unit`, `no_telepon`, `status`, `created_at`) VALUES
 (5, 'Narson', 'FST', '089876543210', 'aktif', '2026-06-22 12:21:40'),
 (6, 'Budi', 'FSH', '087654321098', 'aktif', '2026-06-22 12:28:57'),
-(7, 'ibra', 'fst', '08976542321', 'aktif', '2026-06-23 04:28:47');
+(7, 'ibra', 'fst', '08976542321', 'aktif', '2026-06-23 04:28:47'),
+(11, 'Hans', 'FST', '087654321098', 'aktif', '2026-06-27 12:45:09');
 
 -- --------------------------------------------------------
 
@@ -166,6 +167,7 @@ CREATE TABLE `riwayat` (
   `keperluan` text NOT NULL,
   `tujuan` text NOT NULL,
   `status` enum('disetujui','pending','ditolak') DEFAULT 'pending',
+  `file_pdf` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -173,10 +175,11 @@ CREATE TABLE `riwayat` (
 -- Dumping data untuk tabel `riwayat`
 --
 
-INSERT INTO `riwayat` (`id`, `nama_peminjam`, `kendaraan`, `pengemudi`, `tanggal_pinjam`, `jam_berangkat`, `tanggal_kembali`, `jam_kembali`, `keperluan`, `tujuan`, `status`, `created_at`) VALUES
-(5, 'Narson', 'B 1573 CKI', 'Tohir', '2026-06-22', '19:24:00', '2026-06-22', '04:21:00', 'tes', 'ubd', 'ditolak', '2026-06-22 12:21:40'),
-(6, 'Budi', 'B 7290 CDA', 'Opsional', '2026-06-25', '19:33:00', '2026-06-27', '01:28:00', 'yolo', 'gbc', 'disetujui', '2026-06-22 12:28:57'),
-(7, 'ibra', 'B 1432 CKI', 'Uang Ali', '2026-06-22', '13:29:00', '2026-06-23', '11:30:00', 'seminar', 'seminar', 'disetujui', '2026-06-23 04:28:47');
+INSERT INTO `riwayat` (`id`, `nama_peminjam`, `kendaraan`, `pengemudi`, `tanggal_pinjam`, `jam_berangkat`, `tanggal_kembali`, `jam_kembali`, `keperluan`, `tujuan`, `status`, `file_pdf`, `created_at`) VALUES
+(5, 'Narson', 'B 1573 CKI', 'Tohir', '2026-06-22', '19:24:00', '2026-06-22', '04:21:00', 'tes', 'ubd', 'ditolak', NULL, '2026-06-22 12:21:40'),
+(6, 'Budi', 'B 7290 CDA', 'Opsional', '2026-06-25', '19:33:00', '2026-06-27', '01:28:00', 'yolo', 'gbc', 'disetujui', NULL, '2026-06-22 12:28:57'),
+(7, 'ibra', 'B 1432 CKI', 'Uang Ali', '2026-06-22', '13:29:00', '2026-06-23', '11:30:00', 'seminar', 'seminar', 'disetujui', NULL, '2026-06-23 04:28:47'),
+(11, 'Hans', 'B 1432 CKI', 'Mayor', '2026-06-27', '19:43:00', '2026-06-27', '23:00:00', 'seminar', 'UBD', 'pending', '1782564309_Contoh Tanda Tangan.pdf', '2026-06-27 12:45:09');
 
 -- --------------------------------------------------------
 
@@ -268,7 +271,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT untuk tabel `data_peminjam`
 --
 ALTER TABLE `data_peminjam`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `jadwal_ganti_oli_kendaraan_operasional`
@@ -292,13 +295,13 @@ ALTER TABLE `pengisian_bbm`
 -- AUTO_INCREMENT untuk tabel `riwayat`
 --
 ALTER TABLE `riwayat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT untuk tabel `supir`
 --
 ALTER TABLE `supir`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

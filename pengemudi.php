@@ -269,11 +269,29 @@ $query = mysqli_query($conn, "
 
             <div class="input-group">
                 <label>No Polisi</label>
-                <input
-                    type="text"
-                    name="no_polisi"
-                    required
-                >
+
+                <select name="no_polisi" required>
+
+                    <option value="">-- Pilih Kendaraan --</option>
+
+                    <?php
+                    $kendaraan = mysqli_query($conn,"
+                        SELECT no_polisi
+                        FROM kendaraan
+                        ORDER BY no_polisi ASC
+                    ");
+
+                    while($k = mysqli_fetch_assoc($kendaraan)):
+                    ?>
+
+                        <option value="<?= $k['no_polisi']; ?>">
+                            <?= $k['no_polisi']; ?>
+                        </option>
+
+                    <?php endwhile; ?>
+
+                </select>
+
             </div>
 
             <button
@@ -319,12 +337,33 @@ $query = mysqli_query($conn, "
 
             <div class="input-group">
                 <label>No Polisi</label>
-                <input
-                    type="text"
+
+                <select
                     id="edit_polisi"
                     name="no_polisi"
                     required
                 >
+
+                    <option value="">-- Pilih Kendaraan --</option>
+
+                    <?php
+                    $kendaraanEdit = mysqli_query($conn,"
+                        SELECT no_polisi
+                        FROM kendaraan
+                        ORDER BY no_polisi ASC
+                    ");
+
+                    while($k = mysqli_fetch_assoc($kendaraanEdit)):
+                    ?>
+
+                        <option value="<?= $k['no_polisi']; ?>">
+                            <?= $k['no_polisi']; ?>
+                        </option>
+
+                    <?php endwhile; ?>
+
+                </select>
+
             </div>
 
             <button

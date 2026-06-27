@@ -60,14 +60,50 @@ $queryRiwayat = mysqli_query($conn,"
 
 <?php
 $kendaraan = mysqli_query($conn,"
-    SELECT *
-    FROM kendaraan
-    ORDER BY merk_jenis
+    SELECT
+    k.*,
+
+    (
+        SELECT j.status
+        FROM jadwal_ganti_oli_kendaraan_operasional j
+        WHERE j.id_kendaraan = k.id_kendaraan
+        AND j.status = 'Maintenance'
+        LIMIT 1
+    ) AS status_maintenance,
+
+    (
+        SELECT COUNT(*)
+        FROM riwayat r
+        WHERE r.kendaraan = k.no_polisi
+        AND r.status = 'disetujui'
+        AND NOW() BETWEEN
+            CONCAT(r.tanggal_pinjam,' ',r.jam_berangkat)
+        AND
+            CONCAT(r.tanggal_kembali,' ',r.jam_kembali)
+    ) AS sedang_dipinjam
+
+FROM kendaraan k
+ORDER BY k.merk_jenis ASC
 ");
 
 $supir = mysqli_query($conn,"
-    SELECT *
-    FROM supir
+    SELECT
+    s.*,
+
+    (
+        SELECT COUNT(*)
+        FROM riwayat r
+        WHERE r.pengemudi = s.nama_supir
+        AND r.status = 'disetujui'
+        AND NOW() BETWEEN
+            CONCAT(r.tanggal_pinjam,' ',r.jam_berangkat)
+        AND
+            CONCAT(r.tanggal_kembali,' ',r.jam_kembali)
+    ) AS sedang_bertugas
+
+FROM supir s
+
+ORDER BY s.nama_supir ASC
 ");
 ?>
 
@@ -297,12 +333,31 @@ $supir = mysqli_query($conn,"
 
                             <option value="">Pilih Kendaraan</option>
 
-                            <?php while($k = mysqli_fetch_assoc($kendaraan)): ?>
+                                <?php while($k = mysqli_fetch_assoc($kendaraan)): ?>
+                                    <?php
+
+                                $status = "Tersedia";
+
+                                if(!empty($k['status_maintenance']))
+                                {
+                                    $status = "Maintenance";
+                                }
+                                elseif($k['sedang_dipinjam'] > 0)
+                                {
+                                    $status = "Dipakai";
+                                }
+
+                                ?>
                                 <option
                                     value="<?= $k['no_polisi']; ?>"
                                     data-jenis="<?= $k['jenis']; ?>"
+                                    <?= $status != "Tersedia" ? "disabled" : ""; ?>
                                 >
                                     <?= $k['merk_jenis']; ?> - <?= $k['no_polisi']; ?>
+
+                                    <?= $status != "Tersedia"
+                                    ? " (".$status.")"
+                                    : ""; ?>
                                 </option>
                             <?php endwhile; ?>
 
@@ -321,12 +376,27 @@ $supir = mysqli_query($conn,"
                             <option value="">Pilih Pengemudi</option>
 
                             <?php while($s = mysqli_fetch_assoc($supir)): ?>
+
+                                <?php
+                                $statusSupir =
+                                    ($s['sedang_bertugas'] > 0)
+                                    ? "Bertugas"
+                                    : "Tersedia";
+                                ?>
+
                                 <option
                                     value="<?= $s['nama_supir']; ?>"
                                     data-polisi="<?= $s['no_polisi']; ?>"
+                                    <?= $statusSupir == "Bertugas" ? "disabled" : ""; ?>
                                 >
                                     <?= $s['nama_supir']; ?>
+
+                                    <?= $statusSupir == "Bertugas"
+                                        ? " (Bertugas)"
+                                        : ""; ?>
+
                                 </option>
+
                             <?php endwhile; ?>
 
                         </select>
@@ -341,10 +411,12 @@ $supir = mysqli_query($conn,"
 
                     <label>Tanda Tangan (PDF)</label>
 
-                    <input 
+                    <input
                         type="file"
-                        accept="application/pdf"
                         id="signatureInput"
+                        name="surat_pdf"
+                        accept=".pdf,application/pdf"
+                        required
                     >
 
                 </div>
@@ -442,10 +514,6 @@ signatureInput.addEventListener("change", function(){
     }
 
 });
-
-</script>
-
-<script>
 
 const jenisSelect = document.getElementById('jenisKendaraan');
 const kendaraanSelect = document.getElementById('kendaraanSelect');

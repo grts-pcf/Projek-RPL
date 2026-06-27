@@ -29,6 +29,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $status = "pending";
 
     // ==========================
+    // Upload PDF
+    // ==========================
+
+    $namaPdf = "";
+
+    if(isset($_FILES['surat_pdf']) && $_FILES['surat_pdf']['error'] == 0)
+    {
+        $folder = "../uploads/pdf/";
+
+        $ext = strtolower(pathinfo(
+            $_FILES['surat_pdf']['name'],
+            PATHINFO_EXTENSION
+        ));
+
+        if($ext != "pdf")
+        {
+            die("File harus berupa PDF.");
+        }
+
+        $namaPdf =
+            time() . "_" .
+            basename($_FILES['surat_pdf']['name']);
+
+        if(!move_uploaded_file(
+            $_FILES['surat_pdf']['tmp_name'],
+            $folder . $namaPdf
+        ))
+        {
+            die("Upload PDF gagal.");
+        }
+    }
+
+    // ==========================
     // CEK DATA PEMINJAM
     // ==========================
     $cek = mysqli_query($conn, "
@@ -75,7 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             jam_kembali,
             keperluan,
             tujuan,
-            status
+            status,
+            file_pdf
         )
         VALUES
         (
@@ -88,7 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$jam_kembali',
             '$keperluan',
             '$tujuan',
-            '$status'
+            '$status',
+            '$namaPdf'
         )
     ");
 

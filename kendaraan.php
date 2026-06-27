@@ -298,9 +298,9 @@ ORDER BY k.id_kendaraan ASC
 
                     <td>
                         <?php if($row['jenis'] == "Mobil"): ?>
-                            <span class="success">Mobil</span>
+                            <span class="badge success">Mobil</span>
                         <?php else: ?>
-                            <span class="pending">Motor</span>
+                            <span class="badge pending">Motor</span>
                         <?php endif; ?>
                     </td>
 
@@ -308,19 +308,19 @@ ORDER BY k.id_kendaraan ASC
 
                     <?php if($statusKendaraan == 'Maintenance'): ?>
 
-                        <span class="maintenance">
+                        <span class="badge maintenance">
                             Maintenance
                         </span>
 
                     <?php elseif($statusKendaraan == 'Dipinjam'): ?>
 
-                        <span class="pending">
+                        <span class="badge pending">
                             Dipinjam
                         </span>
 
                     <?php else: ?>
 
-                        <span class="success">
+                        <span class="badge success">
                             Tersedia
                         </span>
 

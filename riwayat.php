@@ -295,7 +295,8 @@ $queryRiwayat = mysqli_query($conn,"
                                     data-pengemudi="<?= $r['pengemudi']; ?>"
                                     data-tujuan="<?= $r['tujuan']; ?>"
                                     data-tanggal="<?= date('d F Y', strtotime($r['tanggal_pinjam'])); ?>"
-                                    data-kembali="<?= date('d F Y', strtotime($r['tanggal_kembali'])); ?>">
+                                    data-kembali="<?= date('d F Y', strtotime($r['tanggal_kembali'])); ?>"
+                                    data-file="<?= $r['file_pdf']; ?>">
                                     Detail
                                 </button>
 
@@ -381,6 +382,24 @@ $queryRiwayat = mysqli_query($conn,"
             <div class="detail-row">
                 <span>Tanggal Kembali</span>
                 <strong id="d_kembali"></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Dokumen</span>
+
+                <strong>
+                    <a
+                        id="d_pdf"
+                        href="#"
+                        target="_blank"
+                        class="btn-1"
+                        style="
+                            padding:6px 12px;
+                            text-decoration:none;
+                        ">
+                        Lihat PDF
+                    </a>
+                </strong>
             </div>
 
         </div>
@@ -507,6 +526,21 @@ document.querySelectorAll('.btnDetail')
 
         document.getElementById('d_kembali').textContent =
             this.dataset.kembali;
+
+        const file = this.dataset.file;
+
+        const pdf =
+        document.getElementById('d_pdf');
+
+        if(file !== '')
+        {
+            pdf.href = 'uploads/pdf/' + file;
+            pdf.style.display = 'inline-block';
+        }
+        else
+        {
+            pdf.style.display = 'none';
+        }
 
         modalDetail.style.display = 'block';
 

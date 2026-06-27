@@ -231,7 +231,7 @@ $queryAdmin = mysqli_query($conn, "
 
                     <tr>
                         <th>Fitur</th>
-                        <th>Status</th>
+                        <th>Terakhir Backup</th>
                         <th>Aksi</th>
                     </tr>
 
@@ -240,63 +240,34 @@ $queryAdmin = mysqli_query($conn, "
                 <tbody>
 
                     <tr>
-                        <td>Dark Mode</td>
-                        <td>
-                            <span class="badge pending">
-                                Nonaktif
-                            </span>
-                        </td>
-                        <td>
-
-                            <button style="
-                                width:auto;
-                                padding:8px 15px;
-                                font-size:14px;
-                            " class="btn-1">
-                                Aktifkan
-                            </button>
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Notifikasi Email</td>
-                        <td>
-                            <span class="badge success">
-                                Aktif
-                            </span>
-                        </td>
-                        <td>
-
-                            <button style="
-                                width:auto;
-                                padding:8px 15px;
-                                font-size:14px;
-                                background:#ef4444;
-                            " class="btn-1">
-                                Nonaktifkan
-                            </button>
-
-                        </td>
-                    </tr>
-
-                    <tr>
                         <td>Backup Database</td>
                         <td>
-                            <span class="badge success">
-                                Aktif
+                            <?php
+                            $backupTerakhir = 'Belum pernah';
+
+                            if (file_exists('backup_info.txt')) {
+                                $backupTerakhir = file_get_contents('backup_info.txt');
+                            }
+                            ?>
+
+                            <span class="status-badge active">
+                                <?= $backupTerakhir ?>
                             </span>
                         </td>
                         <td>
 
-                            <button style="
-                                width:auto;
-                                padding:8px 15px;
-                                font-size:14px;
-                                background:#10b981;
-                            " class="btn-1">
-                                Backup Sekarang
-                            </button>
+                            <a href="backup_database.php">
+                                <button
+                                    style="
+                                        width:auto;
+                                        padding:8px 15px;
+                                        font-size:14px;
+                                        background:#10b981;
+                                    "
+                                    class="btn-1">
+                                    Backup Sekarang
+                                </button>
+                            </a>
 
                         </td>
                     </tr>
