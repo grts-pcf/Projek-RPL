@@ -188,7 +188,9 @@ ORDER BY s.nama_supir ASC
             <h1>Sistem Peminjaman Kendaraan</h1>
 
             <div class="profile">
-                <a href="LOGIN.php">Admin</a>
+                <a href="LOGIN.php">
+                    <?= htmlspecialchars($_SESSION['admin']); ?>
+                </a>
             </div>
             
         </div>

@@ -172,7 +172,9 @@ ORDER BY k.id_kendaraan ASC
             <h1>Master Kendaraan</h1>
 
             <div class="profile">
-                <a href="LOGIN.php">Admin</a>
+                <a href="LOGIN.php">
+                    <?= htmlspecialchars($_SESSION['admin']); ?>
+                </a>
             </div>
 
         </div>

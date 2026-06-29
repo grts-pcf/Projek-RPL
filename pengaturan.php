@@ -97,7 +97,9 @@ $queryAdmin = mysqli_query($conn, "
             <h1>Pengaturan</h1>
 
             <div class="profile">
-                <a href="LOGIN.php">Admin</a>
+                <a href="LOGIN.php">
+                    <?= htmlspecialchars($_SESSION['admin']); ?>
+                </a>
             </div>
 
         </div>

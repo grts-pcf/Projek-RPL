@@ -180,9 +180,9 @@ $totalBBM = mysqli_fetch_assoc($qBBM);
             <h1>Jadwal Maintenance</h1>
 
             <div class="profile">
-
-                <a href="#">Admin</a>
-
+                <a href="LOGIN.php">
+                    <?= htmlspecialchars($_SESSION['admin']); ?>
+                </a>
             </div>
 
         </div>
