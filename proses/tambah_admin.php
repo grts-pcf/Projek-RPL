@@ -25,7 +25,7 @@ if(!in_array($role, ['admin', 'superadmin'])){
 }
 
 $cek = mysqli_query($conn,"
-    SELECT id
+    SELECT id_admin
     FROM admin
     WHERE username='$username'
 ");

@@ -183,12 +183,14 @@ $queryAdmin = mysqli_query($conn, "
                                 <?php if($admin['username'] != $_SESSION['admin']): ?>
 
                                     <button
+                                        class="btn-1 btnHapus"
                                         style="
                                             width:auto;
                                             padding:8px 15px;
                                             background:#ef4444;
                                         "
-                                        class="btn-1">
+                                        data-id="<?= $admin['id_admin']; ?>"
+                                        data-username="<?= htmlspecialchars($admin['username']); ?>">
                                         Hapus
                                     </button>
 
@@ -393,6 +395,43 @@ $queryAdmin = mysqli_query($conn, "
 
 </div>
 
+<div id="modalHapus" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close" data-modal="hapus">&times;</span>
+
+        <h2>Hapus Akun</h2>
+
+        <p>
+            Apakah yakin ingin menghapus akun
+            <strong id="namaHapus"></strong>?
+        </p>
+
+        <form
+            action="proses/hapus_admin.php"
+            method="POST">
+
+            <input
+                type="hidden"
+                id="hapusId"
+                name="id_admin">
+
+            <button
+                type="submit"
+                class="btn-1"
+                style="background:#ef4444;">
+
+                Ya, Hapus
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
 <script>
 
 function openTambahAkun() {
@@ -451,6 +490,49 @@ function closePasswordModal(){
     document.getElementById(
         'modalPassword'
     ).style.display = 'none';
+}
+
+const modalHapus =
+document.getElementById('modalHapus');
+
+document.querySelectorAll('.btnHapus')
+.forEach(btn=>{
+
+    btn.onclick=function(){
+
+        modalHapus.style.display='block';
+
+        document.getElementById('hapusId').value =
+        this.dataset.id;
+
+        document.getElementById('namaHapus').textContent =
+        this.dataset.username;
+
+    }
+
+});
+
+document.querySelectorAll('.close')
+.forEach(btn=>{
+
+    btn.onclick=function(){
+
+        if(this.dataset.modal=="hapus")
+        {
+            modalHapus.style.display="none";
+        }
+
+    }
+
+});
+
+window.onclick=function(e){
+
+    if(e.target==modalHapus)
+    {
+        modalHapus.style.display="none";
+    }
+
 }
 
 </script>
